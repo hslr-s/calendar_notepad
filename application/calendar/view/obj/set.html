@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>项目设置</title>
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" />
+    <!-- <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-3.3.4.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/calendar/jqFullCalendar/css/fullcalendar.css" />
+    <link rel="stylesheet" type="text/css" href="/static/calendar/jqFullCalendar/css/index.css"/>
+    <style>
+        .layui-form-label{
+            width: 150px;
+        }
+        form{
+            margin: 20px;
+        }
+    </style>
+
+</head>
+<body>
+   
+    <form class="layui-form" action="" onsubmit="return false" lay-filter='formDemo'>
+      <div class="layui-form-item">
+        <label class="layui-form-label">一周开始</label>
+        <div class="layui-input-inline">
+          <select name="firstDay" lay-verify="required" lay-search>
+            <option value="0">周日</option>
+            <option value="1">周一</option>
+            <!-- <option value="2">周二</option>
+            <option value="3">周三</option>
+            <option value="4">周四</option>
+            <option value="5">周五</option>
+            <option value="6">周六</option> -->
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">限制条数</label>
+        <div class="layui-input-inline">
+          <input type="text" name="eventLimit" required  lay-verify="required" placeholder="月视图限制显示数，不限添：999" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">显示周次</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="weekNumbers" value="1" title="是"checked>
+            <input type="radio" name="weekNumbers" value="0" title="否" >
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">日程时间</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="c_dayTimeDisplay" value="2" title="开始和结束时间"checked>
+            <input type="radio" name="c_dayTimeDisplay" value="1" title="只显示开始时间" >
+            <input type="radio" name="c_dayTimeDisplay" value="0" title="不显示时间" >
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">节假日</label>
+          <div style="margin-left: 30px;">
+              <div class="layui-input-inline" style="width: 120px;">
+                  <input type="text" name="holidayBackground" value="" readonly="" id="color_input" placeholder="为空不显示节假日" class="layui-input">
+              </div>
+              <div class="layui-inline" style="left: -11px;">
+                  <div id="test-form"></div>
+              </div>
+          </div>
+      </div>
+
+      <!-- 拖动修改 合并到只读模式 -->
+      <!-- <div class="layui-form-item">
+        <label class="layui-form-label">拖动修改</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="editable" value="1" title="是"checked>
+            <input type="radio" name="editable" value="0" title="否" >
+        </div>
+      </div> -->
+      <!-- <div class="layui-form-item">
+        <label class="layui-form-label">显示结束时间</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="displayEventEnd" value="1" title="是"checked>
+            <input type="radio" name="displayEventEnd" value="0" title="否" >
+        </div>
+      </div> -->
+      <div class="layui-form-item">
+        <label class="layui-form-label">只读模式</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="c_onlyRead" value="1" title="是"checked>
+            <input type="radio" name="c_onlyRead" value="0" title="否" >
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+          <!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
+        </div>
+      </div>
+    </form>
+    <script type="text/javascript" src="/static/calendar/jqFullCalendar/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/static/layui/layui.js" ></script>
+    <script>
+        layui.use(['layer','laydate','form','colorpicker','jquery'],function(){
+            var layer=layui.layer,laydate=layui.laydate,colorpicker=layui.colorpicker,form=layui.form;
+            // $=jQuery=layui.jquery;
+            form.on('submit(formDemo)', function(data){
+                // layer.msg(JSON.stringify(data.field));
+                // return false;
+                postdata=data.field;
+                post('/calendar/objectapi/update?obj_id={:input("get.obj_id")}',postdata,function(res){
+                    if(res.code==1){
+                        layer.msg('修改成功')
+                        parent.location.reload(true)
+                    }else{
+                        layer.msg('修改失败')
+                    }
+                })
+                return false;
+            });
+
+            post('/calendar/objectapi/getConfig?obj_id={:input("get.obj_id")}',[],function(res){
+                    form.val("formDemo", res.data);
+                    colorpicker.render({
+                        elem: '#test-form'
+                        ,color: (res.data.holidayBackground?res.data.holidayBackground:"")
+                        ,done: function(color){
+                            $('#color_input').val(color);
+                        }
+                    });
+            })
+
+            
+
+            
+
+
+            function post(url,data,callback){  
+                 $.ajax({
+                    type : "post",
+                    url : url,
+                    dateType:'json',
+                    data:data,
+                    success : function(res) {
+                        callback(res);
+                    }
+                 });
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

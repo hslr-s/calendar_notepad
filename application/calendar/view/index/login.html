@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>账号登录</title>
+        <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" />
+        <style type="text/css">
+            @media only screen and (min-width: 450px) {
+                .a {
+                    width: 310px;
+                    position: absolute;
+                    left: calc(100% / 2 - 170px);
+                    margin-top: 150px;
+                    /*box-shadow: 0px 0px 20px #888888;;*/
+                    padding: 10px;
+                    /*padding-top: 5px;*/
+                    border-radius:1px;
+                    /*background: rgba(0,0,0,0.3);*/
+                    
+                }
+                body {
+                    /*background: #ddd;*/
+                    background: #eee;
+                }
+            }
+            .a .other{
+                    margin-top: 10px;
+                    display: inline-block;
+                }
+            .a h2{
+                    margin-top: 5px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                    color: gray;
+                }
+            .verification{
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .verification .ver-img img{
+                cursor: pointer;
+                height: 38px;
+                width: 100px;
+                border: 1px solid #e6e6e6;
+            }
+            .verification .ver-input{
+                float: right;
+                margin: 0;
+            }
+            .enian-float-right{
+                float: right;
+            }
+            body a{
+                cursor: pointer;    
+            }
+            .qr-login{
+                /*height: 300px;
+                width: 400px;*/
+                /*background: gray;*/
+            }
+            .qr-login img{
+                margin-top: 10px;
+                height: 170px;
+                
+            }
+            .qr-login .content{
+                margin: auto;
+                text-align: center;
+            }
+            .qr-login .content .text{
+                margin-top: 20px;
+            }
+            .qr-login .content .wxapp-qr{
+                color: blueviolet;
+            }
+            #wxapp-logo{
+                position: absolute;
+                top: 30px;
+                /*border: 1px solid darkgray;*/
+                
+                left: calc(100% - 50% - 170px / 2);
+            }
+            #wxapp-logo img{
+                border: 1px solid #e6e6e6;
+                height: 150px;
+            }
+            @media only screen and (max-width: 449px) {
+                .a {
+                    width: 90%;
+                    margin: 60px auto;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class='layui-main a'>
+            <h2  class="title">日历记事本 - 登录</h2>
+
+            <form class="layui-form layui-form-pane" action="" method="POST">
+
+                <div class="layui-form-item">
+                    <input type="text" name="username" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+                </div>
+
+                <div class="layui-form-item">
+                    <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                
+                <div class="verification layui-inline">
+                    <div class="layui-inline ver-img" title="单击刷新">
+                        <img src="http://enianteam.com/captcha.html" alt="captcha" onclick="this.src=this.src+'?'" />
+                    </div>
+                    <div class="layui-inline ver-input">
+                        <input type="password" name="captcha"  lay-verify="" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+            
+                
+                
+                <div class="layui-form-item" align="center">
+                    <a class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" id='btn_login'>登录</a>
+                </div>
+        <!--         <a href="">注册账号</a>
+                <a class="enian-float-right" href="">忘记密码?</a> -->
+                
+            </form>
+        </div>
+
+        
+        <script src="/static/layui/layui.js"></script>
+
+        <script>
+            layui.use(['form', 'layer','jquery','laytpl'], function() {
+                var form = layui.form;
+                var $ = layui.jquery;
+                var laytpl = layui.laytpl;
+                var timeOut
+                var qrContent={
+                        type:'login'
+                        ,code:false
+                    };
+        
+                $('#btn_login').click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"/calendar/Loginapi/check",
+                        data:{
+                            username:$('input[name="username"]').val(),
+                            password:$('input[name="password"]').val()
+                        },
+                        async:true,
+                        success:function(res){
+                            console.log(res);
+                            if(res.code==1){
+                                layer.closeAll();
+                                layer.msg('登录成功');
+                                window.clearInterval(timeOut);//关闭定时
+                                location.href='/calendar';
+                            }else{
+                                layer.msg(res.errMsg);
+                            }
+                        }
+                    });
+                })
+                function checkTimeout(){
+                    $.ajax({
+                        type:"post",
+                        url:"/index/login/clickCode",
+                        data:qrContent,
+                        async:true,
+                        success:function(res){
+                            console.log(res);
+                            if(res.code==1){
+                                layer.closeAll();
+                                layer.msg('登录成功');
+                                window.clearInterval(timeOut);//关闭定时
+                                location.reload()
+                            }
+                        }
+                    });
+                }
+                
+                function getVerificationCode(callback){
+                    $.ajax({
+                        type:"post",
+                        url:"/index/login/verifcationcode/",
+                        success:function(r){
+                            if(r.code==1){
+                                callback(r.verifcationCode);
+                            }else{
+                                layer.alert(r.msg);
+                            }
+                        },
+//                      dataType:'jsonp',
+//                      processData: false, 
+                        async:true
+                    });
+                }
+                // layer.msg('hello');
+            });
+        </script>
+
+    </body>
+
+</html>
