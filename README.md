@@ -9,15 +9,10 @@ ThinkPHP5.1+前端Layui+fullcalendar
 #### 页面展示
 ![内容页面](https://images.gitee.com/uploads/images/2021/1020/214019_89683b7c_1717198.png "2021-10-20.png")
 ![列表页面](https://images.gitee.com/uploads/images/2021/1020/214029_9436ddcb_1717198.png "2021-10-20 (1).png")
+
+#### 开发计划
+[点击查看开发计划和进度](https://thoughts.teambition.com/share/617215d0f53beb0041053ef5#title=日历记事本（网页）)
 #### 安装教程
+请参考[官网教程文档](https://www.kancloud.cn/manual/thinkphp5_1/353946)
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
