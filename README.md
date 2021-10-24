@@ -13,6 +13,6 @@ ThinkPHP5.1+前端Layui+fullcalendar
 #### 开发计划
 [点击查看开发计划和进度](https://thoughts.teambition.com/share/617215d0f53beb0041053ef5#title=日历记事本（网页）)
 #### 安装教程
-请参考[官网教程文档](https://www.kancloud.cn/manual/thinkphp5_1/353946)
+请参考ThinkPHP5.1[官网教程文档](https://www.kancloud.cn/manual/thinkphp5_1/353946)
 
 
