@@ -6,6 +6,9 @@
 #### 软件架构
 ThinkPHP5.1+前端Layui+fullcalendar
 
+#### 软件导图（PHP版本）
+![思维导图](https://images.gitee.com/uploads/images/2021/1027/194002_7fb7fdbf_1717198.png "2021-10-27 (2).png")
+
 #### 页面展示
 ![内容页面](https://images.gitee.com/uploads/images/2021/1020/214019_89683b7c_1717198.png "2021-10-20.png")
 ![列表页面](https://images.gitee.com/uploads/images/2021/1020/214029_9436ddcb_1717198.png "2021-10-20 (1).png")
