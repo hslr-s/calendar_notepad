@@ -2,6 +2,7 @@
 namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
+use app\calendar\lib\Project as libProject;
 class Objectapi extends Common
 {
  
@@ -20,6 +21,9 @@ class Objectapi extends Common
         $findRes=Db::name('obj_list')
         ->where('u_id', $this->userId)
         ->order('update_time desc')->select();
+        foreach ($findRes as $key => $value) {
+            unset($value['pwd']);
+        }
         return json(['code'=>1,'data'=>$findRes]);
     }
 
@@ -70,5 +74,29 @@ class Objectapi extends Common
         $id=Db::name('obj_list')->insertGetId($insertData);
         $insertData['id']=$id;
         return json(['code' => 1,'data'=> $insertData]);
+    }
+
+    // 获取详情
+    public function getInfo(){
+        $obj_id = input('get.obj_id');
+        $info=libProject::getInfo($obj_id);
+        if($info && $info['pwd']){
+            unset($info['pwd']);
+            $info['password']=true;
+        }
+        $this->apiReturnSuccess($info);
+    }
+
+    // 删除项目
+    public function delete(){
+        $obj_id = input('post.obj_id');
+        $name = input('post.name');// 项目名字
+        $res=Db::name('obj_list')->where('id', $obj_id)->where('name', $name)->delete();
+        if($res){
+            $this->apiReturnSuccess([]);
+        }else{
+            $this->apiReturnError(0,'删除失败，请刷新后重试');
+        }
+        
     }
 }

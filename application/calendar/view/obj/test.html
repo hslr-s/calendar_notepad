@@ -1,0 +1,36 @@
+
+
+<style>
+   
+</style>
+
+<div>
+   <button href="/obj/getpage/p/test?obk=3" data-type="1" >修改地址---</button>
+   <button href="/obj/getpage/p/test?obk=4" data-type="1" >修改地址---</button>
+</div>
+
+<script type="text/javascript">
+    layui.use(['layer', 'jquery'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer;
+     
+        console.log('加载完毕---')
+        // 监听地址变化
+        app.eventRegister('routeChange',function(new_route,old_route){
+            console.log('路由变化', new_route, old_route)
+            return false;
+        })
+
+        // app.$e.routeChange=function (new_route, old_route) {
+        //     console.log('路由变化', new_route, old_route)
+        //     return false;
+        // }
+
+        $('button').click(function(){
+            app.go($(this).attr('href'));
+        })
+
+        
+        
+    })
+</script>

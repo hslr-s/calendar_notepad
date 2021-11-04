@@ -1,0 +1,23 @@
+{
+  "id": "2914302",
+  "name": "日历记事本",
+  "font_family": "iconfont",
+  "css_prefix_text": "eicon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1471608",
+      "name": "add-more",
+      "font_class": "add-more",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "25458188",
+      "name": "登出",
+      "font_class": "logout",
+      "unicode": "e89e",
+      "unicode_decimal": 59550
+    }
+  ]
+}

@@ -101,7 +101,9 @@
     <script type="text/javascript" src="/static/calendar/jqFullCalendar/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/static/layui/layui.js" ></script>
     <script>
-        layui.use(['layer','laydate','form','colorpicker','jquery'],function(){
+        layui.app.loadApi('apiObject');
+        layui.use(['layer','laydate','form','colorpicker','jquery','apiObject','app'],function(){
+          
             var layer=layui.layer,laydate=layui.laydate,colorpicker=layui.colorpicker,form=layui.form;
             // $=jQuery=layui.jquery;
             form.on('submit(formDemo)', function(data){
@@ -119,15 +121,26 @@
                 return false;
             });
 
-            post('/calendar/objectapi/getConfig?obj_id={:input("get.obj_id")}',[],function(res){
-                    form.val("formDemo", res.data);
-                    colorpicker.render({
-                        elem: '#test-form'
-                        ,color: (res.data.holidayBackground?res.data.holidayBackground:"")
-                        ,done: function(color){
-                            $('#color_input').val(color);
-                        }
-                    });
+            // post('/calendar/objectapi/getConfig?obj_id={:input("get.obj_id")}',[],function(res){
+            //         form.val("formDemo", res.data);
+            //         colorpicker.render({
+            //             elem: '#test-form'
+            //             ,color: (res.data.holidayBackground?res.data.holidayBackground:"")
+            //             ,done: function(color){
+            //                 $('#color_input').val(color);
+            //             }
+            //         });
+            // })
+
+            layui.app.apiObject.getConfig('{:input("get.obj_id")}',function(resData){
+              form.val("formDemo", resData);
+              colorpicker.render({
+                elem: '#test-form'
+                , color: (resData.holidayBackground ? resData.holidayBackground : "")
+                , done: function (color) {
+                  $('#color_input').val(color);
+                }
+              });
             })
 
             

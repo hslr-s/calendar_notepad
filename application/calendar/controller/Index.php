@@ -15,9 +15,12 @@ class Index extends Common
     public function design(){
         return view('');
     }
+    public function home() {
+        return view('obj/index');
+    }
 
     public function index(){
-        return view('obj/list');
+        return view('obj/index');
     }
 
     public function logout(){

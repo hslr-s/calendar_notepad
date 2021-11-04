@@ -2,8 +2,45 @@
 namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
+use app\calendar\lib\Project as libProject;
 class Eventapi extends Common
 {
+
+    protected $beforeActionList = [
+        'loginStatusCheck',
+        'pwdCheck',
+    ];
+
+
+    // 访问密码验证
+    public function pwdCheck(){
+        $pwd=input('post.pwd');
+        $objId = input('get.obj_id');
+        $info=libProject::getInfo($objId);
+        
+        if (!$info || $info['u_id']!=$this->userId) {
+            // 项目不存在
+            return $this->apiReturnError(0,'项目不存在');
+        }
+
+        // 接口密码验证
+        
+        // // 无需密码
+        // if(!$info['pwd']){
+        //     return ;
+        // }
+        
+        // // 没输入密码并且有密码
+        // if (!$pwd && $info['pwd']) {
+        //     return $this->apiReturnError(-1, '需要密码但是没有输入');
+        // }
+
+        // // 输入密码，并且等于
+        // if($pwd && $info['pwd']!=$pwd){
+        //     return $this->apiReturnError(0, '密码错误');
+        // }
+    }
+
  
     public function add(){
         $data=input('post.');
@@ -11,10 +48,10 @@ class Eventapi extends Common
 
         $insertData['title']=$data['title'];
         $insertData['color']=$data['color'];
-        $insertData['class_name']=isset($data['className'])?$data['className']:'';
+        $insertData['class_name']=isset($data['class_name'])?$data['class_name']:'';
         $insertData['content']=$data['content'];
-        $insertData['start_time']=$data['startTime'];
-        $insertData['end_time']=$data['endTime'];
+        $insertData['start_time']=$data['start_time'];
+        $insertData['end_time']=$data['end_time'];
         $insertData['create_time']=date('Y-m-d H:i:s');
         $insertData['obj_id']=$obj_id;
         $event_id=Db::name('note_list')->insertGetId($insertData);
@@ -40,10 +77,10 @@ class Eventapi extends Common
 
         $updateData['title']=$data['title'];
         $updateData['color']=isset($data['color'])?$data['color']:'';
-        $updateData['class_name']=isset($data['className'])?$data['className']:'';
+        $updateData['class_name']=isset($data['class_name'])?$data['class_name']:'';
         $updateData['content']=$data['content'];
-        $updateData['start_time']=$data['startTime'];
-        $updateData['end_time']=$data['endTime'];
+        $updateData['start_time']=$data['start_time'];
+        $updateData['end_time']=$data['end_time'];
 
         // dump($updateData);
         Db::name('note_list')->where($where)->update($updateData);
@@ -69,13 +106,13 @@ class Eventapi extends Common
 
     public function getHolidayList(){
         $data=input('post.');
-        $obj_id=input('get.obj_id');
+        // $obj_id=input('get.obj_id');
         $start=date('Y-m-d H:i:s',strtotime($data['start_time'].'-15 day'));
         $end=date('Y-m-d H:i:s',strtotime($data['end_time'].'+15 day'));
         $where[]=['start_time','>=',$start];
         $where[]=['start_time','<=',$end];
         $data=Db::name('holiday_list')->where($where)->field('start_time start,end_time end')->select();
-        return json($data);
+        return $this->apiReturnSuccess($data);
     }
 
     // http://tp51.cn/calendar/eventapi/buildHoliday?month=8
@@ -169,23 +206,26 @@ class Eventapi extends Common
         dump($year.'_'.$month.' 节假日获取结束');
     }
 
+    
     public function getList(){
         $data=input('post.');
         $obj_id=input('get.obj_id');
-        $start=date('Y-m-d H:i:s',strtotime($data['start_time'].'-30 day'));
-        $end=date('Y-m-d H:i:s',strtotime($data['end_time'].'+30 day'));
+        $start_time=input('post.start_time');
+        $end_time = input('post.end_time');
+        $start=date('Y-m-d H:i:s',strtotime($start_time.'-30 day'));
+        $end=date('Y-m-d H:i:s',strtotime($end_time.'+30 day'));
         // 验证是否为当前用户项目
         $res = Db::name('obj_list')
             ->where('u_id', $this->userId)
             ->where('id', $obj_id)
             ->find();
         if(!$res){
-            $this->error("这个项目不是你的好像");
+            return $this->apiReturnError(0, $data);
         }
         $where[]=['start_time','>=',$start];
         $where[]=['start_time','<=',$end];
         $where[]=['obj_id','=',$obj_id];
         $data=Db::name('note_list')->where($where)->field('start_time start,end_time end,title,color,class_name className,id event_id,id,content')->select();
-        return json($data);
+        return $this->apiReturnSuccess( $data);
     }
 }

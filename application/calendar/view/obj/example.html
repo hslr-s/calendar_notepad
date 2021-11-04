@@ -1,0 +1,130 @@
+    <link href='/static/calendar/5.10/main.min.css' rel='stylesheet' />
+    <!-- <script src='/static/calendar/5.10/main.min.js'></script> -->
+    <style>
+        #calendar-container-ex{
+            width: 100%;
+        }
+    </style>
+    <div id='calendar-container-ex'>
+        <div id='calendar-ex'></div>
+    </div>
+
+    <script>
+
+        // document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar-ex');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: '100%',
+                expandRows: true,
+                slotMinTime: '08:00',
+                slotMaxTime: '20:00',
+                locale: 'zh-cn',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                customButtons: {
+                    setting: {
+                        text: '设置',
+                        click: function () {
+                            console.log('设置按钮');
+                            layer.open({
+                                type: 2,
+                                title: '设置项目',
+                                shadeClose: true,
+                                shade: false,
+                                maxmin: true, //开启最大化最小化按钮
+                                area: ['500px', '600px'],
+                                content: "/calendar/obj/set?obj_id={:input('get.obj_id')}"
+                            });
+                            // location.href="/calendar/object/set?obj_id={:input('get.obj_id')}";
+                        }
+                    },
+                    list: {
+                        text: '显示列表',
+                        click: function () {
+                            goToObjList();
+                        }
+                    }
+                },
+                buttonText: {
+                    today: '今天',
+                    month: '月',
+                    week: '周',
+                    day: '天',
+                    listMonth: '月日程'
+                },
+                initialView: 'dayGridMonth',
+                initialDate: '2020-09-12',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                selectable: true,
+                nowIndicator: true,
+                dayMaxEvents: true, // allow "more" link when too many events
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2020-09-01',
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2020-09-07',
+                        end: '2020-09-10'
+                    },
+                    {
+                        groupId: 999,
+                        title: 'Repeating Event',
+                        start: '2020-09-09T16:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: 'Repeating Event',
+                        start: '2020-09-16T16:00:00'
+                    },
+                    {
+                        title: 'Conference',
+                        start: '2020-09-11',
+                        end: '2020-09-13'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T10:30:00',
+                        end: '2020-09-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2020-09-12T12:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T14:30:00'
+                    },
+                    {
+                        title: 'Happy Hour',
+                        start: '2020-09-12T17:30:00'
+                    },
+                    {
+                        title: 'Dinner',
+                        start: '2020-09-12T20:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2020-09-13T07:00:00'
+                    },
+                    {
+                        title: 'Click for Google',
+                        url: 'http://google.com/',
+                        start: '2020-09-28'
+                    }
+                ]
+            });
+
+            calendar.render();
+        // });
+        document.addEventListener('DOMContentLoaded', function () {
+            calendar.render();
+        })
+    </script>
+

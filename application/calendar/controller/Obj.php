@@ -17,11 +17,17 @@ class Obj extends Common
             $data['note']=$res['note'];
             $data['password']=$res['pwd']==''?0:1;
             if($res){
-                return view('index5', $data);
+                // return view('index');
+                return view('index6', $data);
             }else{
                 $this->error("这个项目不存在");
             }
             
         }
+    }
+
+    public function getPage($p) {
+        // dump($pageName);
+        return view($p);
     }
 }

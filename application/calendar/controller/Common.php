@@ -7,16 +7,14 @@ use think\Controller;
 class Common extends Controller{
 
     protected $beforeActionList = [
-        'init'=>['except'=>'login']
+        'loginStatusCheck'=>['except'=>'login']
     ];
 
     public $userId;
 
-    public function init(){
-        // echo 66666;
+    public function loginStatusCheck(){
         $uid=$this->userId=session('Calendar_user_id');
 
-        
         $loginKey=cache('Calendar_login_loginkey_'.$uid);
         // 缓存中没有loginKey，则读取数据库，并保存
         if(!$loginKey){
@@ -114,6 +112,19 @@ class Common extends Controller{
     public function _empty($name){
         // dump(request()->controller().'/'.request()->action());
         return view(strtolower(request()->controller()).'/'.strtolower(request()->action()));
+    }
+
+    public function apiReturn($code,$msg="OK",$data=null){
+        header('Content-Type:application/json; charset=utf-8');
+        exit(json_encode(['code' => $code, 'data' => $data, 'msg' => $msg])) ;
+    }
+
+    public function apiReturnSuccess( $data) {
+        return $this->apiReturn(1,  "OK", $data);
+    }
+
+    public function apiReturnError($code, $msg) {
+        return $this->apiReturn($code,  $msg,null);
     }
 
   
