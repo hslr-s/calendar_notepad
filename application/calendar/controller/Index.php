@@ -4,24 +4,7 @@ use think\Db;
 use think\facade\App;
 class Index extends Common
 {
-    public function login(){
-        return view('');
-    }
-
-    public function test(){
-        return view('');
-    }
-
-    public function design(){
-        return view('');
-    }
-    public function home() {
-        return view('obj/index');
-    }
-
-    public function index(){
-        return view('obj/index');
-    }
+    // http://calendar.cn/calendar/index/design
 
     public function logout(){
         session('NoteBook_user_id',null);

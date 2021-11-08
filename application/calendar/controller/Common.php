@@ -109,10 +109,7 @@ class Common extends Controller{
         exit(json_encode(['data'=>$data,'code'=>$err_code,'err_msg'=>$err_msg]));
     }
 
-    public function _empty($name){
-        // dump(request()->controller().'/'.request()->action());
-        return view(strtolower(request()->controller()).'/'.strtolower(request()->action()));
-    }
+    
 
     public function apiReturn($code,$msg="OK",$data=null){
         header('Content-Type:application/json; charset=utf-8');
@@ -125,6 +122,14 @@ class Common extends Controller{
 
     public function apiReturnError($code, $msg) {
         return $this->apiReturn($code,  $msg,null);
+    }
+
+
+    // 转到页面
+    public function _empty($name) {
+        // dump(request());
+        // dump(request()->controller().'/'.request()->action());
+        return view(strtolower(request()->controller()).'/'.strtolower(request()->action()));
     }
 
   

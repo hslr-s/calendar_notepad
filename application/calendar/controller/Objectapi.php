@@ -17,6 +17,26 @@ class Objectapi extends Common
         return json(['code'=>1,'data'=>$config]);
     }
 
+    // 获取设置内容
+    public function getSetting() {
+        $obj_id = input('get.obj_id');
+
+
+        $info = libProject::getInfo($obj_id);
+        
+
+        $where[] = ['obj_id', 'like', $obj_id];
+        $findRes = Db::name('obj_config')->where($where)->select();
+        $config = [];
+        foreach ($findRes as $key => $value) {
+            $config[$value['config']] = $value['value'];
+        }
+        $config['project_name']=$info['name'];
+        $config['project_note']=$info['note'];
+        $config['project_password'] = $info['pwd'];
+        return json(['code' => 1, 'data' => $config]);
+    }
+
     public function getList(){
         $findRes=Db::name('obj_list')
         ->where('u_id', $this->userId)

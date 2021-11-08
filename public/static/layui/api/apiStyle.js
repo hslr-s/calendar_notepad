@@ -5,10 +5,17 @@ layui.define(['jquery', 'layer'], function (exports) {
     o={}
     o.getList=function(callbackList){
         
-        app.ajaxGet(domain + "/calendar/style/getStyleList",function(res){
+        app.ajaxGet(domain + "/calendar/styleapi/getStyleList",function(res){
             if (res.code==1){
                 callbackList(res.data)
             }
+        })
+    }
+
+    // 获取样式内容
+    o.getStyleText = function (callbackList){
+        app.ajaxGet(domain + "/calendar/styleapi/getStyleText", function (res) {
+            callbackList(res)
         })
     }
 

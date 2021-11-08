@@ -1,7 +1,13 @@
 
 
 <style>
-   
+   .aaaaa{
+
+   }
+
+   .aaaaa .layui-layer-btn .layui-layer-btn1{
+       background-color: darkcyan;
+   }
 </style>
 
 <div>
@@ -16,10 +22,10 @@
      
         console.log('加载完毕---')
         // 监听地址变化
-        app.eventRegister('routeChange',function(new_route,old_route){
-            console.log('路由变化', new_route, old_route)
-            return false;
-        })
+        // app.eventRegister('routeChange',function(new_route,old_route){
+        //     console.log('路由变化', new_route, old_route)
+        //     return false;
+        // })
 
         // app.$e.routeChange=function (new_route, old_route) {
         //     console.log('路由变化', new_route, old_route)
@@ -30,6 +36,31 @@
             app.go($(this).attr('href'));
         })
 
+        app.base.layer({
+            title:"文字",
+            // btn:['aa1','aaa2'],
+            skin:'aaaaa',
+            buttons:[
+                {   
+                    title:'按钮1',
+                    type:2,
+                    onClick:function(e){ 
+                        console.log('点击1',e)
+                    }
+                },
+                {
+                    title: '按钮2',
+                    type:2,
+                    onClick:function(e){
+                        
+                        console.log('点击2', e)
+                    }
+                },
+
+
+
+            ],
+        })
         
         
     })

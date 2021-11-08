@@ -1,110 +1,115 @@
 
 <!-- 日期处理时间工具 -->
-<script type="text/javascript" src="/static/calendar/jqFullCalendar/js/moment.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/calendar/style/getStyleText/style.css" />
-<style>
-    #calendar {
-        /* max-width: 1200px; */
-        /* margin: 20px auto 0; */
-        width: 100%;
-        
-    }
+<script type="text/javascript" src="/static/calendar/5.10/moment.min.js"></script>
 
-    .event-btn {
-        display: inline-block;
-        padding: 5px;
-        border-radius: 5px;
-    }
-
-
-
-    .fc-button-group .fc-button {
-        height: 35px;
-    }
-
-    .title {
-        color: #a7a7a7;
-        border-bottom: 1px solid #f3f3f3;
-    }
-
-    /* 月视图事件超出部分省略号显示 */
-    .fc-daygrid-block-event .fc-event-main .event-content {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 5px;
-        /*margin: 3px;*/
-        display: block;
-        /*font-size: 14px;*/
-    }
-
-    .fc-list-event-graphic,
-    .fc-list-event-time {
-        display: none;
-    }
-
-    .fc-theme-standard td:hover,
-    .fc-theme-standard th:hover {
-        color: black;
-    }
-
-    .nav-title{
-        color: #a7a7a7;
-        text-align: center;
-        border-bottom: 1px #efefef solid;
-        margin-bottom: 10px;
-    }
-    .password-title {
-        margin: 10px 0;
-        color: #6e6e6e;
-    }
-
-    .password-input {
-        width: calc(100% - 50px);
-        display: inline-block;
-    }
-
-    .password-btn {
-        text-align: center;
-        margin-left: 10px;
-        cursor: pointer;
-    }
-
-    #password-box{
-        width: 300px;
-        border-radius: 0.5rem;
-        top: calc(50% - 58px);
-        position: absolute;
-        left: calc(50% - 150px);
-        padding: 20px;
-        border: 1px #ddd solid;
-    }
-
-    #btn-password-commit{
-        color: darkcyan;
-    }
-    
-    .forget-password{
-        color: cornflowerblue;
-        cursor: pointer;
-    }
-
-    /* 标题栏样式 */
-    .fc-toolbar-chunk .fc-toolbar-title{
-        font-weight: 600;
-        /* color: darkcyan; */
-        color: #6e6e6e;
-    }
-
-    /* 自定义按钮自定义图标 */
-    .custom-button{
-        font-size: 18px !important;
-        font-family: layui-icon !important;
-    }
-    
-</style>
 
 <script type="text/html" id="tpl-file_tool_objcontent">
+    <style id="objectContent-style">
+        #calendar {
+            /* max-width: 1200px; */
+            /* margin: 20px auto 0; */
+            width: 100%;
+    
+        }
+    
+        .event-btn {
+            display: inline-block;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    
+    
+    
+        .fc-button-group .fc-button {
+            height: 35px;
+        }
+    
+        .title {
+            color: #a7a7a7;
+            border-bottom: 1px solid #f3f3f3;
+        }
+    
+        /* 月视图事件超出部分省略号显示 */
+        .fc-daygrid-block-event .fc-event-main .event-content {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 5px;
+            /*margin: 3px;*/
+            display: block;
+            /*font-size: 14px;*/
+        }
+    
+        .fc-list-event-graphic,
+        .fc-list-event-time {
+            display: none;
+        }
+    
+        .fc-theme-standard td:hover,
+        .fc-theme-standard th:hover {
+            color: black;
+        }
+    
+        .nav-title {
+            color: #a7a7a7;
+            text-align: center;
+            border-bottom: 1px #efefef solid;
+            margin-bottom: 10px;
+        }
+    
+        .password-title {
+            margin: 10px 0;
+            color: #6e6e6e;
+        }
+    
+        .password-input {
+            width: calc(100% - 50px);
+            display: inline-block;
+        }
+    
+        .password-btn {
+            text-align: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    
+        #password-box {
+            width: 300px;
+            border-radius: 0.5rem;
+            top: calc(50% - 58px);
+            position: absolute;
+            left: calc(50% - 150px);
+            padding: 20px;
+            border: 1px #ddd solid;
+        }
+    
+        #btn-password-commit {
+            color: darkcyan;
+        }
+    
+        .forget-password {
+            color: cornflowerblue;
+            cursor: pointer;
+        }
+    
+        /* 标题栏样式 */
+        .fc-toolbar-chunk .fc-toolbar-title {
+            font-weight: 600;
+            /* color: darkcyan; */
+            color: #6e6e6e;
+        }
+    
+        /* 自定义按钮自定义图标 */
+        .custom-button {
+            font-size: 18px !important;
+            font-family: layui-icon !important;
+        }
+    </style>
+    <!-- <div class="layui-hide"> -->
+        <!-- <style id="objectContent-style">
+        </style> -->
+    <!-- </div> -->
+   
     <header class="nav">
         <div class="nav-title"> {{d.title}} </div>
     </header>
@@ -115,7 +120,7 @@
         
         <div>
             <div class="password-input">
-                <input type="text" id="input-password" placeholder="{{d.pwd_text}}" class="layui-input">
+                <input type="text" id="input-password" autocomplete="off" placeholder="{{d.pwd_text}}" class="layui-input">
             </div>
             <div class="layui-inline password-btn">
                 <div id="btn-password-commit">查看</div>
@@ -133,6 +138,9 @@
                 font-weight: 800;
                 color: #a1a1a1;
             }
+            
+
+            
         
             
         </style>
@@ -146,7 +154,7 @@
     <!-- 添加编辑模板 -->
     <script type="text/html" id='form_input'>
 
-        <div class="layui-form layui-form-pane" action="" style="padding: 20px">
+        <div class="layui-form layui-form-pane" action="" style="padding: 20px;">
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">事件标题</label>
                 <div class="layui-input-block">
@@ -196,12 +204,12 @@
                     <input type="text" class="layui-input" readonly="" id="end_time" placeholder="yyyy-MM-dd">
                 </div>
             </div>
-            <div class="layui-form-item">
+            <!-- <div class="layui-form-item">
             <div class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit="" id="submit" lay-filter="demo1">保存</button>
                 <button type="reset" class="layui-btn layui-btn-danger" id="delete">删除</button>
             </div>
-            </div>
+            </div> -->
         </div>
             
     </script>
@@ -226,6 +234,10 @@
 
             // 接口API
             var apiObject=layui.apiObject, apiEvent = layui.apiEvent, apiStyle = layui.apiStyle;
+
+            
+            
+            
 
             apiEvent.visit_password= visit_password;
             // ====================
@@ -272,11 +284,17 @@
             // 获取详情
             // ========
             apiObject.getInfo(objId,function(data){
+
                 
+
                 var tplData={};
                 tplData['pwd_text']="请输入密码";
                 tplData['title']= (data && data.name)? data.name:'';
                 app.base.tplRender('#tpl-file_tool_objcontent', tplData, tplArg.elem,function(){
+                    // 加载样式文件
+                    apiStyle.getStyleText(function (html) {
+                        $('#objectContent-style').append(html)
+                    })
                     if (!data) {
                         $('#empty-box').removeClass('layui-hide')
                         return;
@@ -301,6 +319,15 @@
                         })
                         
                     })
+
+                    // 监听密码回车
+                    $('#password-box').bind('keyup', function (event) {
+                        // console.log(event.keyCode)
+                        if (event.keyCode == "13") {
+                            //回车执行查询
+                            $("#btn-password-commit").click()
+                        }
+                    });
                     
                 })
                 
@@ -536,16 +563,91 @@
             function openInfo(data, event) {
                 var title = data.title || '';
                 var color = data.color || '';
+                var layerButtons=[];
                 if (!Number(config.c_onlyRead)) {
                     var layeropentitle = (event ? '修改事件' : '新增事件');
+                    layerButtons=[
+                        {
+                            title: '保存',
+                            onClick: function (layer_index) {
+                                var d = {
+                                    //一旦日历重新取得日程源，则原有日程将消失，当指定stick为true时，日程将永久的保存到日历上
+                                    title: $('#text_input').val(),
+                                    start: $('#start_time').val(),
+                                    end: $('#end_time').val(),
+                                    content: $('#content').val(),
+                                    allDay: data.allDay,
+                                    // rendering: 'background',
+                                    block: true,
+                                    className: $('#class_select').val(),
+                                    color: $('#color_input').val(),
+                                }
+
+                                if (d.title == '') {
+                                    layer.msg('请填写标题')
+                                    return;
+                                }
+
+                                var postdata = {};
+                                if (event) {
+                                    d['source'] = event.source
+                                }
+                                postdata['startTime'] = d.start;
+                                postdata['endTime'] = d.end;
+                                postdata['title'] = d.title;
+                                postdata['className'] = d.className;
+                                postdata['color'] = d.color;
+                                postdata['content'] = d.content;
+                                if (event && event.id) {
+                                    postdata['event_id'] = event.id;
+                                    apiEvent.update(objId, postdata, function (res) {
+                                        // calendar.fullCalendar('renderEvent',d,false);
+                                        calendar.refetchEvents()
+                                        layer.close(layer_index);
+                                    }, function () {
+                                        layer.msg('修改失败')
+                                    })
+                                } else {
+                                    apiEvent.add(objId, postdata, function (res) {
+                                        // calendar.fullCalendar('renderEvent',d,false);
+                                        calendar.refetchEvents()
+                                        layer.close(layer_index);
+                                    }, function () {
+                                        layer.msg('修改失败')
+                                    })
+                                }
+                                return false
+                            }
+                        },
+                        {
+                            title: '删除',
+                            type: 'danger',
+                            onClick: function () {
+                                var postdata = {};
+                                layer.confirm('确定删除此事件吗', {
+                                    btn: ['确定', '取消'] //按钮
+                                }, function () {
+                                    apiEvent.delete(objId, event.id, function () {
+                                        event.remove()
+                                        layer.closeAll();
+                                    }, function () {
+                                        layer.msg('删除失败')
+                                    })
+                                })
+                                return false
+                            }
+                        },
+                    ];
                 } else {
                     var layeropentitle = '详情';
                 }
-                layer.open({
+                app.base.layer({
                     type: 1,
                     shade: 0.5,
+                    skin:'content-info-layer',
                     title: layeropentitle,
                     content: $('#form_input').html(),
+                    buttons: layerButtons,
                     success: function () {
                         // 如果只读模式需要删除不需要的元素
                         if (Number(config.c_onlyRead)) {
@@ -559,12 +661,15 @@
                             laydate.render({
                                 elem: '#start_time'
                                 , type: 'datetime'
+                                ,trigger: 'click'
                             });
                             laydate.render({
                                 elem: '#end_time'
                                 , type: 'datetime'
+                                ,trigger: 'click'
                             });
                         }
+                        
                         // 获取风格列表
                         apiStyle.getList(function (list) {
                                 for (var i = 0; i < list.length; i++) {
@@ -592,74 +697,6 @@
                         if (!event || !event.id) {
                             $("#delete").remove();
                         }
-
-                        // 删除事件
-                        $('#delete').click(function () {
-                            var postdata = {};
-                            layer.confirm('确定删除此事件吗', {
-                                btn: ['确定', '取消'] //按钮
-                            }, function () {
-                                apiEvent.delete(objId, event.id,function(){
-                                    event.remove()
-                                    layer.closeAll();
-                                },function(){
-                                    layer.msg('删除失败')
-                                })
-                            })
-
-                        })
-                        // 监听保存
-                        $('#submit').click(function () {
-                            var d = {
-                                //一旦日历重新取得日程源，则原有日程将消失，当指定stick为true时，日程将永久的保存到日历上
-                                title: $('#text_input').val(),
-                                start: $('#start_time').val(),
-                                end: $('#end_time').val(),
-                                content: $('#content').val(),
-                                allDay: data.allDay,
-                                // rendering: 'background',
-                                block: true,
-                                className: $('#class_select').val(),
-                                color: $('#color_input').val(),
-                            }
-
-                            if (d.title == '') {
-                                layer.msg('请填写标题')
-                                return;
-                            }
-
-                            var postdata = {};
-                            if (event) {
-                                d['source'] = event.source
-                            }
-                            postdata['startTime'] = d.start;
-                            postdata['endTime'] = d.end;
-                            postdata['title'] = d.title;
-                            postdata['className'] = d.className;
-                            postdata['color'] = d.color;
-                            postdata['content'] = d.content;
-                            if (event && event.id) {
-                                postdata['event_id'] = event.id;
-                                apiEvent.update(objId, postdata, function (res) {
-                                    // calendar.fullCalendar('renderEvent',d,false);
-                                    calendar.refetchEvents()
-                                    layer.closeAll();
-                                },function(){
-                                    layer.msg('修改失败')
-                                })
-                            } else {
-                                apiEvent.add(objId, postdata, function (res) {
-                                    // calendar.fullCalendar('renderEvent',d,false);
-                                    calendar.refetchEvents()
-                                    layer.closeAll();
-                                }, function () {
-                                    layer.msg('修改失败')
-                                })
-                            }
-
-
-
-                        })
 
                     }
                 });
