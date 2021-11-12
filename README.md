@@ -20,6 +20,9 @@ ThinkPHP5.1+前端Layui+fullcalendar
 [开发vlog视频](https://www.ixigua.com/7026667370643096095)
 
 #### 安装教程
+
+[我个人的开发环境请点击参考](http://blog.enianteam.com/content/php/67.html)
+
 请参考ThinkPHP5.1[官网教程文档](https://www.kancloud.cn/manual/thinkphp5_1/353946)
 
 
