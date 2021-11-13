@@ -62,9 +62,24 @@ class Objectapi extends Common
     public function update(){
         $data=input('post.');
         $obj_id=input('get.obj_id');
+        if($this->object_is_user($obj_id)==false){
+            $this->apiReturnError(0,'不是你的项目');
+        }
         
 
         foreach ($data as $key => $value) {
+            if(substr($key,0,8)=='project_'){
+                if(substr($key, 8)=='password'){
+                    Db::name('obj_list')->where('id', $obj_id)->update(['pwd'=> $value]);
+                }
+                if (substr($key, 8) == 'name' && $value) {
+                    Db::name('obj_list')->where('id', $obj_id)->update(['name' => $value]);
+                }
+                if (substr($key, 8) == 'note' && $value) {
+                    Db::name('obj_list')->where('id', $obj_id)->update(['note' => $value]);
+                }
+                continue;
+            }
             $where=[];
             $where[]=['config','like',$key];
             $where[]=['obj_id','like',$obj_id];
@@ -80,7 +95,7 @@ class Objectapi extends Common
                 Db::name('obj_config')->insert($insertData);
             }
         }
-        return json(['code'=>1]);
+        return $this->apiReturnSuccess([]);
     }
 
     // 添加一个项目
@@ -93,7 +108,7 @@ class Objectapi extends Common
         
         $id=Db::name('obj_list')->insertGetId($insertData);
         $insertData['id']=$id;
-        return json(['code' => 1,'data'=> $insertData]);
+        return $this->apiReturnSuccess($insertData);
     }
 
     // 获取详情

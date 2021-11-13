@@ -53,7 +53,7 @@ class Common extends Controller{
         // 判断该项目是否为该用户所有
         $whereMap[]=['id','like',$object_id];
         $whereMap[]=['u_id','like',$this->userId];
-        $res=Db::name('object')->where($whereMap)->find();
+        $res=Db::name('obj_list')->where($whereMap)->find();
         if(!$res){
             return false;
         }

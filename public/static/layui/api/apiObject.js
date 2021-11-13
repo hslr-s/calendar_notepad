@@ -32,6 +32,15 @@ layui.define(['jquery', 'layer'], function (exports) {
         })
     }
 
+    // 获取项目设置
+    o.getConfig = function (objId, callback) {
+        app.ajaxGet(domain + "/calendar/objectapi/getSetting?obj_id=" + objId, function (res) {
+            if (res.code == 1) {
+                callback(res.data)
+            }
+        })
+    }
+
     // 获取假期的数据
     o.getHolidayList = function (objId, start_time, end_time, callback) {
         var data = {};

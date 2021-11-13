@@ -41,6 +41,11 @@ class Loginapi{
         
     }
 
+    // 获取注册验证码
+    public function getRegisterGetVCode(){
+
+    }
+
     // 清空所有的登录信息
     public function cleanLogin(){
         Cache::clear('Calendar_login');
