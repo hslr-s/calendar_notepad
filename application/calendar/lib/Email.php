@@ -6,6 +6,12 @@ use think\Db;
 use think\Controller;
 
 class Email {
+
+
+    // 发送邮件，读取系统配置
+    public function sendTplMail($toMail, $title, $content) {
+        return $this->sendMail($toMail, $title, $content);
+    }
     
     // 发送邮件，读取系统配置
     public function sendMail($toMail, $title, $content){
@@ -15,6 +21,7 @@ class Email {
         $config['username'] = $configs['username']; //账号
         $config['password'] = $configs['password']; //密码
         $config['from'] = $configs['from']; //发件人邮箱
+        // dump($config);die;
         return $this->sendMailBase($config, $toMail, $title, $content);
     }
 
@@ -34,12 +41,12 @@ class Email {
     // $config['password'] = '123456'; //密码
     // $config['from'] = 'admin@example.com'; //发件人邮箱
     public function sendMailBase($config,$to, $title, $content) {
-        $config['port']=isset($config['port'])? $config['port']:465;
+        $config['port']=isset($config['port'])? $config['port']:25;
         $config['SMTPSecure'] = isset($config['SMTPSecure']) ? $config['SMTPSecure'] : 'tls';
         require_once __DIR__ . '/../../../extend/PHPMailer/PHPMailer.php';
         $mail = new \PHPMailer(false);
         //是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
-        $mail->SMTPDebug = 1;
+        // $mail->SMTPDebug = 1;
         //使用smtp鉴权方式发送邮件
         $mail->isSMTP();
         //smtp需要鉴权 这个必须是true
@@ -79,13 +86,14 @@ class Email {
         // $mail->addAttachment('./d.jpg','mm.jpg');
         //同样该方法可以多次调用 上传多个附件
         // $mail->addAttachment('./Jlib-1.1.0.js','Jlib.js');
-
+        // dump($mail);
         $status = $mail->send();
 
         //简单的判断与提示信息
         if ($status) {
             return true;
         } else {
+            dump($mail->ErrorInfo);
             return false;
         }
     }

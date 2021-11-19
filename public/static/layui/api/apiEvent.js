@@ -7,7 +7,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     o.visit_password=null;
     // o.getObjectList=function(page,limit,callbackList){
         
-    //     app.ajaxPost(domain + "/calendar/objectapi/getList?page=" + page + "&limit=" + limit,{},function(res){
+    //     app.base.ajaxPost(domain + "/calendar/objectapi/getList?page=" + page + "&limit=" + limit,{},function(res){
     //         if (res.code==1){
     //             callbackList(res.data)
     //         }
@@ -26,13 +26,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata['class_name'] = data.className;
         postdata['color'] = data.color;
         postdata['content'] = data.content;
-        app.ajaxPost(domain + "/calendar/eventapi/update?obj_id=" + objId, postdata, function (res) {
-            if (res.code == 1) {
-                callback(res.data);
-            } else {
-                errCallback(res.msg);
-            }
-        })
+        app.base.ajaxPost(domain + "/calendar/eventapi/update?obj_id=" + objId, postdata, callback)
     }
 
     o.add = function (objId, data, callback,errCallback) {
@@ -43,26 +37,14 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata['class_name'] = data.className;
         postdata['color'] = data.color;
         postdata['content'] = data.content;
-        app.ajaxPost(domain + "/calendar/eventapi/add?obj_id=" + objId, postdata, function (res) {
-            if (res.code == 1) {
-                callback(res.data);
-            }else{
-                errCallback(res.msg);
-            }
-        })
+        app.base.ajaxPost(domain + "/calendar/eventapi/add?obj_id=" + objId, postdata, callback, errCallback)
     }
 
-    o.delete = function (objId, eventId, callback,errClaaback) {
+    o.delete = function (objId, eventId, callback, errCallback) {
         postdata = {}
         postdata["event_id"] = eventId;
         // postdata['pwd'] = o.visit_password;
-        app.ajaxPost(domain + "/calendar/eventapi/delete?obj_id=" + objId, postdata, function (res) {
-            if (res.code == 1) {
-                callback(res.data)
-            }else{
-                errClaaback(res.msg)
-            }
-        })
+        app.base.ajaxPost(domain + "/calendar/eventapi/delete?obj_id=" + objId, postdata, callback, errCallback)
     }
 
     
@@ -71,13 +53,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata.start_time = start_time;
         postdata.end_time = end_time;
         postdata['pwd'] = o.visit_password;
-        app.ajaxPost(domain + "/calendar/eventapi/getList?obj_id=" + objId, postdata, function (res) {
-            if (res.code == 1) {
-                callback(res.data)
-            }else{
-                if (pwdCallback) pwdCallback(res.code,res.msg)
-            }
-        })
+        app.base.ajaxPost(domain + "/calendar/eventapi/getList?obj_id=" + objId, postdata, callback, pwdCallback)
     }
 
     

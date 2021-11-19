@@ -3,7 +3,8 @@ namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
 use app\calendar\lib\Project as libProject;
-class Objectapi extends Common
+use app\calendar\lib\Email;
+class Objectapi extends Tkcommon
 {
  
     public function getConfig(){
@@ -120,6 +121,25 @@ class Objectapi extends Common
             $info['password']=true;
         }
         $this->apiReturnSuccess($info);
+    }
+
+    // 找回密码
+    public function retrievePassword(){
+        $obj_id = input('get.obj_id');
+        if(!$this->object_is_user($obj_id)){
+            $this->apiReturnError(0, '此项目不是你的');
+        }
+        $info = libProject::getInfo($obj_id);
+        if($info){
+            $mail=new Email();
+            $status=$mail->sendTplMail('95302870@qq.com','日历记事本 - 项目密码找回','您的项目['. $info['name'].']访问密码是：'. $info['pwd'].'。');
+            if($status){
+                $this->apiReturnSuccess([]);
+            }else{
+                $this->apiReturnError(0,'邮件发送失败，请联系管理员');
+            }
+        }
+        $this->apiReturnError(0, '我觉得此项目好像没有设置密码');
     }
 
     // 删除项目

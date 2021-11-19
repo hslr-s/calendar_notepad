@@ -95,6 +95,8 @@
            openInsideProject(obj_id)
         }
 
+        app.base.setTitle('日历记事本');
+
         // 左侧列表
         app.runTpl("objectList", {
             elem: "#list_box",
@@ -115,7 +117,6 @@
             // console.log("路由改变",new_route, old_route);
             // 判断是否只改变了参数
             if(new_route==old_route && old_route==app.base.route.home){
-                // console.log('参数变化', new_route, old_route)
                 openInsideProject(app.parseUrl().params.obj_id)
                 return false;// 阻止跳转
             }

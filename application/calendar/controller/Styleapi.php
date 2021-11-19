@@ -2,7 +2,7 @@
 namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
-class Styleapi extends Common
+class Styleapi extends Tkcommon
 {
  
 

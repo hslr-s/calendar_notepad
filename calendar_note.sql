@@ -137,10 +137,13 @@ INSERT INTO `calendar_style_list` VALUES (13, 999, '(淡)蓝色', 'color-c-name1
 DROP TABLE IF EXISTS `calendar_user`;
 CREATE TABLE `calendar_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `loginkey` varchar(52) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `password` varchar(32) DEFAULT NULL,
+  `loginkey` varchar(52) DEFAULT NULL,
+  `auth_id` int(11) DEFAULT NULL COMMENT '权限id 1.管理员',
+  `status` varchar(1) DEFAULT NULL COMMENT '状态 0.停用 1.启用',
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 

@@ -1,0 +1,113 @@
+
+
+<style>
+    #page_box {
+
+        height: calc(100% - 70px);
+        width: 100%;
+    }
+
+
+    .page_box_style {
+        border: 1px solid #f2f2f2;
+        box-shadow: 0 0 2px #888;
+        border-radius: 10px;
+        padding: 15px;
+        background: white;
+        display: inline-block;
+        height: 100%;
+        width: calc(100% - 70px);
+        margin: auto 20;
+        margin-top: 20px;
+    }
+</style>
+
+<div>
+
+    <!-- 日历内容 -->
+    <div id="page_box" class="layui-inline">
+        <!-- 默认显示空内容 -->
+        <div class="page_box_style">
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">邮箱设置</li>
+                    <li>其他设置</li>
+                    <li>用户管理</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <blockquote class="layui-elem-quote">此邮箱是用作用户找回密码，用户注册等操作下发的系统级别邮箱。</blockquote>
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">服务器地址</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入邮箱服务器地址" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">邮箱密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="password" required lay-verify="required" placeholder="请输入密码或授权码" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">部分邮箱是授权码</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-xs" lay-submit lay-filter="formDemo">发送测试邮件</button>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-tab-item">
+                        <!-- <blockquote class="layui-elem-quote"></blockquote> -->
+                        <form class="layui-form" action="">
+                         
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">开放注册</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="sex" value="1" title="是">
+                                    <input type="radio" name="sex" value="0" title="否" checked>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">允许新用户注册，开启前请确保邮箱信息已填写</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-tab-item">内容3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element','form'], function () {
+        var element = layui.element;
+        layui.form.render()
+    });
+</script>

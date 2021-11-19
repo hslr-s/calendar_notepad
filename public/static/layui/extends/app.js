@@ -1,24 +1,25 @@
 layui.define(['jquery','layer','laytpl'],function(exports){ 
-    var $ = layui.jquery,layer=layui.layer,laytpl=layui.laytpl;
+    var $ = layui.jquery,layer=layui.layer;
 
     // 属性
     var eContent, oTpl = {}, events = {}, contentElemId="page-content";
     var pageCacheC={};
     var route={'old':'','new':''};
-
     // 系统事件
-    // routeChange(newRoute,oldRoute) 路由变化
-    // pageClose() 页面关闭
+    var loadBeforeBefore;
+    var systemEvents={
+        loadPageBefore:null
+    };
 
     // 配置
     var Config={
         viewUrlPrefix: '', // 页面路径的前缀
+        viewUrlSuffix: '',// 页面路径的后缀
         viewUrlApi:null, // 页面请求接口
         templatePath: '/template/', // 模板路径
     }
 
     // 变量
-    // var pageJumpTag = 1;
     var hashChangeListen={};
 
     function go(_url){
@@ -30,7 +31,7 @@ layui.define(['jquery','layer','laytpl'],function(exports){
 
     function goToPage(_url){
         setUrl(_url);
-        loadPage();
+        loadPage(eContent);
     }
 
     // 设置浏览器地址 但是不会进行跳转
@@ -41,7 +42,6 @@ layui.define(['jquery','layer','laytpl'],function(exports){
 
     function open(_url){
         window.open('/#'+_url)
-        
     }
 
     function ajaxGet(_url,_success,_error){
@@ -125,16 +125,13 @@ layui.define(['jquery','layer','laytpl'],function(exports){
 
     }
 
-    function getUrl(){
+    function getRoute(){
         var router = location.hash
-        
+
         // var num = str.indexOf("!");
         router = router.substr(1);
         // console.log("路由", router);
         return router;
-    }
-    function getRoute(){
-        return getUrl();
     }
 
     function init(obj){
@@ -148,51 +145,8 @@ layui.define(['jquery','layer','laytpl'],function(exports){
                 }
             }
         }
-        // console.log(Config)
         listen()
         if (obj.success) obj.success();
-        // refreshMenu()
-    }
-
-    // 刷新菜单
-    function refreshMenu(){
-       setTopMenu()
-    }
-
-    function open_window(_url,_area,_success){
-        var _area=_area||['500px', '300px']
-        layer.open({
-            type: 1,
-            title:false,
-            offset: 'rb', //右下角弹出
-            closeBtn: 0, //不显示关闭按钮
-            anim: 2,
-            area: _area,
-            shade:false,
-            content: _url,
-            success:_success
-        });
-    }
-
-    function alayer(_obj){
-        // _obj.area=_obj.area||(isMobile()?['90%','300px']:['500px', '300px']);
-        if(_obj.area){
-           _obj.area=[isMobile()?'90%':'500px',_obj.area.indexOf(1)?_obj.area[1]:'300px']
-        }else{
-           _obj.area=(isMobile()?['90%','300px']:['500px', '300px'])
-        }
-        // layer.open({
-        //     type: 1,
-        //     title:false,
-        //     offset: 'rb', //右下角弹出
-        //     closeBtn: 0, //不显示关闭按钮
-        //     anim: 2,
-        //     area: _obj.area,
-        //     shade:false,
-        //     content: _obj.content,
-        //     success:_success
-        // });
-        return layer.open(_obj);
     }
 
     /**
@@ -207,8 +161,6 @@ layui.define(['jquery','layer','laytpl'],function(exports){
         var path_full_name = _name;
         _name = _name.replace('/','_');
         var last_name = path_full_name.split('/')[path_full_name.split('/').length - 1];
-
-        // console.log('使用模板', _name, path_full_name)
         if(_cache==undefined){
             _cache=true
             if ($(elem).length == 0){
@@ -220,7 +172,6 @@ layui.define(['jquery','layer','laytpl'],function(exports){
         }
 
         if(_cache==true && $('#tpl-'+_name).length>=1){
-            // console.log('使用缓存模板')
             // 模板存在
             if (oTpl[_name]) {
                 oTpl[_name](_arg);
@@ -288,7 +239,7 @@ layui.define(['jquery','layer','laytpl'],function(exports){
         pageCacheC={};
     }
 
-    function loadPage(){
+    function loadPage(renderElem){
         // 页面关闭事件
         if (events.pageClose){
             if(events.pageClose()===false){
@@ -296,33 +247,54 @@ layui.define(['jquery','layer','laytpl'],function(exports){
             }
         }
         cleanPage();// 清空缓存和事件
-        var url="";
-        if (Config.viewUrlApi){
+        if (systemEvents.loadBeforeBefore){
+            var obj={
+                route: getRoute(),
+                html:'',
+                url: parseUrl(getRoute()),
+                Element: Element
+            }
+            let res=systemEvents.loadBeforeBefore(obj)
+            // console.log(res , obj.html);
+            if (obj.html){
+                renderElem.html(obj.html);
+                return;
+            }
+            if(res===false){
+                return;
+            }
+        }
+        loadPageDefault(renderElem);
+    }
+
+    // 默认的加载页面事件
+    function loadPageDefault(renderElem){
+        var url = "";
+        if (Config.viewUrlApi) {
             // 指定页面获取url
-            ajaxPost(Config.viewUrlApi, {'p': Config.viewUrlPrefix + getRoute()}, function (html) {
-                eContent.html(html);
-                eContent.attr('path', parseUrl(getRoute()).path);
+            ajaxPost(Config.viewUrlApi, { 'p': Config.viewUrlPrefix + getRoute() }, function (html) {
+                renderElem.html(html);
+                renderElem.attr('path', parseUrl(getRoute()).path);
             }, function (e) {
-                eContent.html('页面错误，请稍后重试');
+                renderElem.html('页面错误，请稍后重试');
             })
-        }else{
+        } else {
             url = Config.viewUrlPrefix + getRoute();
-            // console.log(url);
             // 自动加后缀
             let urlObj = parseUrl(url)
             url = urlObj.relative;
             let start = url.indexOf("?")
             if (start != -1) {
-                url = url.slice(0, start) + ".html" + url.slice(start)
+                url = url.slice(0, start) + Config.viewUrlSuffix + url.slice(start)
             } else {
-                url = url + ".html"
+                url = url + Config.viewUrlSuffix
             }
-            let templateUrl =url;
+            let templateUrl = url;
             ajaxGet(templateUrl, function (html) {
-                eContent.html(html);
-                eContent.attr('path', parseUrl(getRoute()).path);
+                renderElem.html(html);
+                renderElem.attr('path', parseUrl(getRoute()).path);
             }, function (e) {
-                eContent.html('页面错误，请稍后重试');
+                renderElem.html('页面错误，请稍后重试');
             })
         }
     }
@@ -340,10 +312,10 @@ layui.define(['jquery','layer','laytpl'],function(exports){
             route.new=getRoute();
             if (events['routeChange']){
                 if (events.routeChange(route.new.split("?")[0], route.old.split("?")[0])!==false){
-                    loadPage();
+                    loadPage(eContent);
                 }
             }else{
-                loadPage();
+                loadPage(eContent);
             }
         });
     }
@@ -355,30 +327,6 @@ layui.define(['jquery','layer','laytpl'],function(exports){
     // 注册事件
     function register(name,callback){
         events[name] = callback;
-        // console.log('注册事件', name);
-    }
-
-    // ==================
-    // 组件相关
-    // ==================
-
-    // 组件
-    function component(_name, callback){
-        if (!callback){
-            defComponent(_name, callback);
-        }else{
-            useComponent(_name);
-        }
-    }
-
-    // 定义组件
-    function defComponent(_name, callback) {
-        
-    }
-
-    // 使用组件
-    function useComponent(_name){
-
     }
 
     // ==================
@@ -392,21 +340,14 @@ layui.define(['jquery','layer','laytpl'],function(exports){
         init:init,
         ajaxGet:ajaxGet,
         parseUrl:parseUrl,
-        // getUrl: getUrl,// 暂时不用，被route...替代
         getRoute: getRoute,
         go:go,
-        // setUrl: setUrl,// 暂时不用，被route...替代
         setRoute: setUrl,
         open:open,
         ajaxPost:ajaxPost,
-        // bytesToSize:bytesToSize,
-        // setTopMenu:setTopMenu,
-        // getExtendName:getExtendName,
         runTpl:runTpl,
         defTpl:defTpl,
-        layer:alayer,
         isMobile:isMobile,
-        // loadPage: loadPage,
         goToPage: goToPage,
         getToken: getToken,
         eventRegister: register,
@@ -421,6 +362,9 @@ layui.define(['jquery','layer','laytpl'],function(exports){
         },
         usePageCache: function (func_name) {
             return pageCacheC[func_name]
+        },
+        systemEvents: function(name,func){
+            systemEvents[name] = func;
         }
     }
     exports('app', app);

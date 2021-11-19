@@ -87,7 +87,7 @@
             color: darkcyan;
         }
     
-        .forget-password {
+        .forget-project-password {
             color: cornflowerblue;
             cursor: pointer;
         }
@@ -115,7 +115,7 @@
     </header>
     <div id='password-box' class="layui-anim layui-anim-fadein layui-hide">
         <div class="password-title">
-            请输入密码查看项目 <span class="forget-password"> <!-- 忘记密码? --></span>
+            请输入密码查看项目 <span class="forget-project-password"> 忘记密码?</span>
         </div>
         
         <div>
@@ -237,7 +237,6 @@
 
             
             
-            
 
             apiEvent.visit_password= visit_password;
             // ====================
@@ -305,10 +304,23 @@
                         showModle(2, objId)
                     }
 
+                    // 忘记密码被点击
+                    $('.forget-project-password').on('click', function () {
+                        layer.confirm('确定后密码将会发送到你的邮箱中', {
+                            btn: ['确定', '取消'] //按钮
+                        }, function () {
+                            apiObject.retrievePassword(objId, function () {
+                                layer.msg('项目密码已经发送到你的注册邮箱中，请注意查收');
+                            }, function (msg) {
+                                layer.alert(msg);
+                            })
+
+                        });
+                    })
+
                     // 查看密码被点击
                     $("#btn-password-commit").click(function(){
                         var password= $('#input-password').val();
-                        // console.log('获取密码', password)
                         
                         // 给接口密码变量设置密码
                         apiObject.passwordCheck(objId, password, function(){
@@ -565,7 +577,7 @@
                 var color = data.color || '';
                 var layerButtons=[];
                 if (!Number(config.c_onlyRead)) {
-                    var layeropentitle = (event ? '修改事件' : '新增事件');
+                    
                     layerButtons=[
                         {
                             title: '保存',
@@ -619,7 +631,12 @@
                                 return false
                             }
                         },
-                        {
+                        
+                    ];
+                    var layeropentitle = (event ? '修改事件' : '新增事件');
+                    if(event){
+                        // 删除按钮
+                        layerButtons.push({
                             title: '删除',
                             type: 'danger',
                             onClick: function () {
@@ -636,8 +653,9 @@
                                 })
                                 return false
                             }
-                        },
-                    ];
+                        },)
+                    }
+                    
                 } else {
                     var layeropentitle = '详情';
                 }

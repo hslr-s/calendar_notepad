@@ -57,14 +57,6 @@
             /* padding: 1px; */
             
         }
-
-        .obj-list-box #btn_header_right i {
-            color: #ffab2e;
-            /* background-color:#ffab2e; */
-            /* border-radius: 50px; */
-            /* padding: 1px; */
-            
-        }
     
         .obj-list-box .content {
             overflow-y: auto;
@@ -174,7 +166,7 @@
             <div id="btn_header_left" class="layui-inline"><i class="iconfont eicon-logout" title="退出登录"></i>
             </div>
             <div class="layui-inline obj-list-box-title">日历记事本</div>
-            <div id="btn_header_right" class="layui-inline"><i class="iconfont eicon-add-more" title="添加项目"></i>
+            <div id="btn_header_right" class="layui-inline"><i class="iconfont eicon-add-more" title="更多操作"></i>
             </div>
         </div>
         <div class="content-box">
@@ -185,9 +177,9 @@
     </div>
 </script>
 <script type="text/javascript">
-    app.base.loadApi('apiObject');
+    app.base.loadApi(['apiObject','apiLogin']);
     app.defTpl('objectList', function (tplArg) {
-        layui.use(['layer', 'laytpl','apiObject','my_base'], function () {
+        layui.use(['layer', 'laytpl','apiObject','apiLogin','dropdown'], function () {
             var laytpl = layui.laytpl, $ = layui.$;
 
             // laytpl($('#tpl-file_tool_objlist').html()).render({}, function (html) {
@@ -206,36 +198,68 @@
             setWindow()
             getContent(1)
 
+
+            layui.dropdown.render({
+                elem: '#btn_header_right'
+                , data: [
+                    {
+                        title: '个人信息'
+                        , id: 99
+                    },
+                    {
+                        title: '密码修改'
+                        , id: 100
+                    },
+                    {
+                        title: '新建项目'
+                        , id: 101
+                    }, 
+                    {
+                        title: '管理平台'
+                        , id: 102
+                    }
+                ]
+                , click: function (obj) {
+                    this.elem.val(obj.title);
+                    if(obj.id==101){
+                        // location.href='/calendar/index/add_object'
+                        layer.prompt({
+                            title: "新建项目"
+                        }, function (value, index, elem) {
+
+                            $.ajax({
+                                url: '/calendar/objectapi/add',
+                                type: "post",
+                                data: {
+                                    "name": value,
+                                },
+                                success: function (res) {
+                                    if (res['code'] == 1) {
+                                        getContent(1);
+                                    }
+                                }
+                            })
+                            layer.close(index);
+                        });
+                    }else if(obj.id == 102){
+                        app.go('/admin')
+                    }
+                }
+                , style: 'width: 100px;'
+            });
             
 
-            $('#btn_header_right').click(function () {
-                // location.href='/calendar/index/add_object'
-                layer.prompt({
-                    title: "新建项目"
-                }, function (value, index, elem) {
-                    
-                    $.ajax({
-                        url: '/calendar/objectapi/add',
-                        type: "post",
-                        data: {
-                            "name": value,
-                        },
-                        success: function (res) {
-                            if (res['code'] == 1) {
-                                getContent(1);
-                            }
-                        }
-                    })
-                    layer.close(index);
-                });
-
-            })
+        
 
             $('#btn_header_left').click(function () {
                 layer.confirm('确定要退出登录吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
-                    location.href = '/calendar/index/logout'
+                    layui.apiLogin.logout(function(){
+                        app.go(app.base.route.login);
+                        layer.closeAll();
+                    })
+                    
                 });
 
             })

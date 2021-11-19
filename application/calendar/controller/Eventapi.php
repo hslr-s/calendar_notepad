@@ -3,7 +3,7 @@ namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
 use app\calendar\lib\Project as libProject;
-class Eventapi extends Common
+class Eventapi extends Tkcommon
 {
 
     protected $beforeActionList = [
