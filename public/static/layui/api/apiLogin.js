@@ -29,6 +29,11 @@ layui.define(['jquery', 'layer'], function (exports) {
         app.base.ajaxGet(domain + "/calendar/loginapi/linkRegister?code=" + code, callback, errCallback)
     }
 
+    // 获取开放信息
+    o.getOpenInfo = function (callback, errCallback) {
+        app.base.ajaxGet(domain + "/calendar/loginapi/getOpenInfo", callback, errCallback)
+    }
+
 
 
 

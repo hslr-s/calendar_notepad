@@ -177,9 +177,9 @@
     </div>
 </script>
 <script type="text/javascript">
-    app.base.loadApi(['apiObject','apiLogin']);
+    app.base.loadApi(['apiObject','apiLogin','apiUser']);
     app.defTpl('objectList', function (tplArg) {
-        layui.use(['layer', 'laytpl','apiObject','apiLogin','dropdown'], function () {
+        layui.use(['layer', 'laytpl','apiObject','apiLogin','dropdown','apiUser'], function () {
             var laytpl = layui.laytpl, $ = layui.$;
 
             // laytpl($('#tpl-file_tool_objlist').html()).render({}, function (html) {
@@ -197,28 +197,35 @@
             var newPage = 1
             setWindow()
             getContent(1)
+            
+            var rightMenu= [
+                {
+                    title: '个人信息'
+                    , id: 99
+                },
+                {
+                    title: '密码修改'
+                    , id: 100
+                },
+                {
+                    title: '新建项目'
+                    , id: 101
+                },
+            ]
+            
+            layui.apiUser.getUserInfo(function(info){
+                if(info.auth_id==1){
+                    rightMenu.push({
+                        title: '管理平台'
+                        , id: 102
+                    })
+                }
+            })
 
 
             layui.dropdown.render({
                 elem: '#btn_header_right'
-                , data: [
-                    {
-                        title: '个人信息'
-                        , id: 99
-                    },
-                    {
-                        title: '密码修改'
-                        , id: 100
-                    },
-                    {
-                        title: '新建项目'
-                        , id: 101
-                    }, 
-                    {
-                        title: '管理平台'
-                        , id: 102
-                    }
-                ]
+                , data: rightMenu
                 , click: function (obj) {
                     this.elem.val(obj.title);
                     if(obj.id==101){

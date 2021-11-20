@@ -26,7 +26,7 @@ class Config  {
     
     // 保存配置
     public static function set(string $key,string $content){
-        $res=self::get($key);
+        $res= Db::name('config')->where('config', $key)->find();
         if($res){
             $saveRes=Db::name('config')->where('config', $key)->update(['value'=> $content]);
         }else{

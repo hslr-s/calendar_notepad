@@ -93,7 +93,7 @@ class Email {
         if ($status) {
             return true;
         } else {
-            dump($mail->ErrorInfo);
+            // dump($mail->ErrorInfo);
             return false;
         }
     }

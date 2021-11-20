@@ -12,7 +12,10 @@ class Common extends Controller{
         exit(json_encode(['data'=>$data,'code'=>$err_code,'err_msg'=>$err_msg]));
     }
 
-    
+    public function apiReturnList( $data = null,$count=0) {
+        header('Content-Type:application/json; charset=utf-8');
+        exit(json_encode(['code' => 0, 'data' => $data, 'count'=> $count]));
+    }
 
     public function apiReturn($code,$msg="OK",$data=null){
         header('Content-Type:application/json; charset=utf-8');

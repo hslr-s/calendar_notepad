@@ -115,7 +115,7 @@
         <div class="layui-form-item" align="center">
             <a class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" id='btn_login'>登录</a>
         </div>
-        <a class="register-username" >注册账号</a>
+        <a class="register-username layui-hide" >注册账号</a>
         <a class="enian-float-right" >忘记密码?</a>
         
     </form>
@@ -136,7 +136,12 @@
                 ,code:false
             };
 
-        
+        // 获取基础信息
+        layui.apiLogin.getOpenInfo(function(d){
+            if(d.open_register=='1'){
+                $('.register-username').removeClass('layui-hide');
+            }
+        })
 
         app.base.setTitle('日历记事本 - 登录');
         
@@ -157,24 +162,7 @@
                  layer.msg(msg);
             })
         })
-        function checkTimeout(){
-            // $.ajax({
-            //     type:"post",
-            //     url:"/index/login/clickCode",
-            //     data:qrContent,
-            //     async:true,
-            //     success:function(res){
-            //         console.log(res);
-            //         if(res.code==1){
-            //             layer.closeAll();
-            //             layer.msg('登录成功');
-            //             window.clearInterval(timeOut);//关闭定时
-            //             location.reload()
-            //         }
-            //     }
-            // });
-        }
-        
+       
         function getVerificationCode(callback){
             $.ajax({
                 type:"post",
@@ -186,8 +174,6 @@
                         layer.alert(r.msg);
                     }
                 },
-//                      dataType:'jsonp',
-//                      processData: false, 
                 async:true
             });
         }

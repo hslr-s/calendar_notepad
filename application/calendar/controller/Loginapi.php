@@ -5,6 +5,7 @@ use think\Db;
 
 use app\calendar\lib\Email;
 use app\calendar\lib\Config;
+use app\calendar\lib\Verification;
 
 class Loginapi extends Common{
 
@@ -119,6 +120,12 @@ class Loginapi extends Common{
         }
     }
 
+    // 获取开放配置(允许注册等)
+    public function getOpenInfo(){
+        $res=Config::get('sys_other_open_register');
+        return $this->apiReturnSuccess(['open_register'=> $res]);
+    }
+
     // 链接方式注册
     public function linkRegister(){
         $code=input('get.code');
@@ -150,8 +157,7 @@ class Loginapi extends Common{
 
 
     protected function checkMail($mail){
-        $regex = '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
-        return preg_match($regex, $mail);
+        return Verification::checkMail($mail);
     }
 
     protected function makePassword($length = 8, $chars = '') {
@@ -165,12 +171,7 @@ class Loginapi extends Common{
 
     // 验证密码
     protected function checkPassword($v){
-        $pattern="/^[0-9a-zA-Z_\.@]{6,16}$/i";
-        if(preg_match($pattern,$v)){
-            return true;
-        }else{
-            return false;
-        }
+        return Verification::checkPassword($v);
     }
   
 }
