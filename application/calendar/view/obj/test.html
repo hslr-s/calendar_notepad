@@ -8,11 +8,17 @@
    .aaaaa .layui-layer-btn .layui-layer-btn1{
        background-color: darkcyan;
    }
+
+   
 </style>
 
-<div>
-   <button href="/obj/getpage/p/test?obk=3" data-type="1" >修改地址---</button>
-   <button href="/obj/getpage/p/test?obk=4" data-type="1" >修改地址---</button>
+<div id="apppppp">
+    <!-- <p><span class="event-info-time-p-span-title">我是标题，我要写很多的呢绒哦。很多很多很多的</span></p>
+    
+    <p class="event-info-time-p">创建时间： <span>2021-11-16 16:27:53</span></p>
+    <hr>
+    <p><span class="event-info-time-p-span-content">555555</span></p>
+    <p class="event-info-time-p">执行时间： <span>2021-11-16 16:27:53 ~ 2021-11-16 16:27:59</span></p> -->
 </div>
 
 <script type="text/javascript">
@@ -21,6 +27,16 @@
             , layer = layui.layer;
      
         console.log('加载完毕---')
+        app.runTpl("eventInfo", {
+            title:'我是标题',
+            create_time: '2021-11-16 17:09:14',
+            start_time: '2021-11-16 17:09:14',
+            end_time: '2021-11-16 17:09:14',
+            content: '本篇主要集中罗列页面中的一些简单辅助元素，如：引用块、字段集区块、横线等等，这些元素都无需依赖任何模块',
+            onEditClick: function (layerIndex) {
+                console.log(layerIndex)
+            }
+        })
         // 监听地址变化
         // app.eventRegister('routeChange',function(new_route,old_route){
         //     console.log('路由变化', new_route, old_route)
@@ -32,32 +48,24 @@
         //     return false;
         // }
 
-        $('button').click(function(){
-            app.go($(this).attr('href'));
-        })
+        // $('button').click(function(){
+        //     app.go($(this).attr('href'));
+        // })
 
         app.base.layer({
-            title:"文字",
+            title:"详情",
+            area:[400,500],
             // btn:['aa1','aaa2'],
             skin:'aaaaa',
+            content:$('#apppppp').html(),
             buttons:[
                 {   
-                    title:'按钮1',
+                    title:'编辑',
                     type:2,
                     onClick:function(e){ 
                         console.log('点击1',e)
                     }
-                },
-                {
-                    title: '按钮2',
-                    type:2,
-                    onClick:function(e){
-                        
-                        console.log('点击2', e)
-                    }
-                },
-
-
+                }
 
             ],
         })

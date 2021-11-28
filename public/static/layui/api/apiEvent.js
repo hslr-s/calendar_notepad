@@ -1,7 +1,7 @@
 // API 接口 - 事件类
 
 layui.define(['jquery', 'layer'], function (exports) {
-    var domain = "", postdata={}
+    var domain = app.base.apiDomain + "/eventapi/", postdata={}
     o={}
 
     o.visit_password=null;
@@ -26,7 +26,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata['class_name'] = data.className;
         postdata['color'] = data.color;
         postdata['content'] = data.content;
-        app.base.ajaxPost(domain + "/calendar/eventapi/update?obj_id=" + objId, postdata, callback)
+        app.base.ajaxPost(domain + "update?obj_id=" + objId, postdata, callback)
     }
 
     o.add = function (objId, data, callback,errCallback) {
@@ -37,14 +37,14 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata['class_name'] = data.className;
         postdata['color'] = data.color;
         postdata['content'] = data.content;
-        app.base.ajaxPost(domain + "/calendar/eventapi/add?obj_id=" + objId, postdata, callback, errCallback)
+        app.base.ajaxPost(domain + "add?obj_id=" + objId, postdata, callback, errCallback)
     }
 
     o.delete = function (objId, eventId, callback, errCallback) {
         postdata = {}
         postdata["event_id"] = eventId;
         // postdata['pwd'] = o.visit_password;
-        app.base.ajaxPost(domain + "/calendar/eventapi/delete?obj_id=" + objId, postdata, callback, errCallback)
+        app.base.ajaxPost(domain + "delete?obj_id=" + objId, postdata, callback, errCallback)
     }
 
     
@@ -53,7 +53,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata.start_time = start_time;
         postdata.end_time = end_time;
         postdata['pwd'] = o.visit_password;
-        app.base.ajaxPost(domain + "/calendar/eventapi/getList?obj_id=" + objId, postdata, callback, pwdCallback)
+        app.base.ajaxPost(domain + "getList?obj_id=" + objId, postdata, callback, pwdCallback)
     }
 
     

@@ -1,7 +1,7 @@
 // API 接口 - 用户
 
 layui.define(['jquery', 'layer'], function (exports) {
-    var domain = "/calendar/userapi/", postdata={}
+    var domain = app.base.apiDomain +"/userapi/", postdata={}
     o={}
 
     

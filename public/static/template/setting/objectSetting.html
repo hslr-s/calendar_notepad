@@ -45,7 +45,7 @@
           <label class="layui-form-label">每周的第一天为</label>
           <div class="layui-input-inline">
             <select name="firstDay" lay-verify="required" lay-search>
-              <option value="0">周日</option>
+              <option value="0" checked>周日</option>
               <option value="1">周一</option>
             </select>
           </div>
@@ -53,7 +53,7 @@
         <div class="layui-form-item">
           <label class="layui-form-label">月视图最大显示数量</label>
           <div class="layui-input-inline">
-            <input type="text" name="eventLimit"  placeholder="填999则不限制" autocomplete="off"
+            <input type="number" name="eventLimit"  placeholder="不填为自动" autocomplete="off"
               class="layui-input">
           </div>
         </div>
@@ -61,16 +61,16 @@
         <div class="layui-form-item">
           <label class="layui-form-label">是否显示周次</label>
           <div class="layui-input-inline">
-            <input type="radio" name="weekNumbers" value="1" title="是" checked>
-            <input type="radio" name="weekNumbers" value="0" title="否">
+            <input type="radio" name="weekNumbers" value="1" title="是" >
+            <input type="radio" name="weekNumbers" value="0" title="否" checked>
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">日程时间</label>
           <div class="layui-input-inline">
-            <input type="radio" name="c_dayTimeDisplay" value="2" title="显示开始和结束时间" checked>
+            <input type="radio" name="c_dayTimeDisplay" value="2" title="显示开始和结束时间" >
             <input type="radio" name="c_dayTimeDisplay" value="1" title="只显示开始时间">
-            <input type="radio" name="c_dayTimeDisplay" value="0" title="隐藏时间">
+            <input type="radio" name="c_dayTimeDisplay" value="0" title="隐藏时间" checked>
           </div>
         </div>
         <div class="layui-form-item">
@@ -86,13 +86,14 @@
           </div>
         </div>
         
-        <div class="layui-form-item">
+        <!-- 删除只读模式 -->
+        <!-- <div class="layui-form-item">
           <label class="layui-form-label">只读模式</label>
           <div class="layui-input-inline">
-            <input type="radio" name="c_onlyRead" value="1" title="是" checked>
-            <input type="radio" name="c_onlyRead" value="0" title="否">
+            <input type="radio" name="c_onlyRead" value="1" title="是" >
+            <input type="radio" name="c_onlyRead" value="0" title="否" checked>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </fieldset>
