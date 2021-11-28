@@ -5,6 +5,7 @@ use think\Db;
 use app\calendar\lib\Email;
 use app\calendar\lib\Config;
 use app\calendar\lib\Verification;
+use app\calendar\lib\UserLib;
 class Adminapi extends Tkcommon
 {
 
@@ -18,50 +19,19 @@ class Adminapi extends Tkcommon
 
     // 创建用户
     public function editUser() {
-        $uid = input('post.user_id');
+        $data['id'] = input('post.user_id');
         
-        $username = input('post.username/s');
-        $password = input('post.password/s');
-        $name = input('post.name/s');
-        $status = input('post.status/d');
-        $auth_id = input('post.auth_id/d');
-        $findRes=Db::name('user')->where('username', $username)->find();
-
-        if(!Verification::checkMail($username)){
-            $this->apiReturnError(0, '邮箱（账号）格式不正确');
-        }
-        if ($password && !Verification::checkPassword($password)) {
-            $this->apiReturnError(0, '密码格式不正确，可以是小写字母、大写字母、数字或者是".","@","_"');
-        }
-
-        $data['username']=$username;
-        $data['name']=$name;
-        $data['status']=$status;
-        $data['auth_id'] = $auth_id;
-        if($uid){
-            // 修改
-
-            if($findRes && $findRes['id']!= $uid){
-                $this->apiReturnError(0,'用户已存在，不可以修改');
-            }
-            if($password){
-                $data['password'] = md5($password);
-            }
-            Db::name('user')->where('id', $uid)->update($data);
+        $data['username'] = input('post.username/s');
+        $data['password'] = input('post.password/s');
+        $data['name'] = input('post.name/s');
+        $data['status'] = input('post.status/d');
+        $data['auth_id'] = input('post.auth_id/d');
+        $res=UserLib::editUser($data);
+        if($res['err']){
+            return $this->apiReturnError(0, $res['err']);
         }else{
-            // 添加
-
-            if($findRes['id']){
-                $this->apiReturnError(0, '用户已存在，请更换账号后重试');
-            }
-            $data['password'] = md5($password);
-            $data['create_time'] = date('Y-m-d H:i:s');
-            if ($password=='' || $username==''  || $status=='' || $auth_id=='') {
-                $this->apiReturnError(0, '信息填写不完整');
-            }
-            Db::name('user')->insert($data);
+            $this->apiReturnSuccess(0);
         }
-        $this->apiReturnSuccess(0);
     }
     
     // 用户列表

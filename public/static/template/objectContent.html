@@ -156,17 +156,17 @@
 
         <div class="layui-form layui-form-pane" action="" style="padding: 20px;">
             <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">事件标题</label>
+                <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
                     <!-- <input type="text" name="title" lay-verify="title" id='text_input' autocomplete="off" placeholder="请输入标题" class="layui-input"> -->
-                    <textarea name="desc" name="title" lay-verify="title" class="layui-textarea"  placeholder="请输入标题" id="text_input"></textarea>
-                </div>
+                    <textarea name="desc" name="title" lay-verify="title" class="layui-textarea"  placeholder="请输入标题内容(不超过255字)" id="text_input"></textarea>
+                </div> 
             </div>
             
             <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">详情</label>
+                <label class="layui-form-label">内容</label>
                 <div class="layui-input-block">
-                    <textarea name="desc" placeholder="可选" class="layui-textarea" id="content"></textarea>
+                    <textarea name="desc" placeholder="可选(不超过1500字)" class="layui-textarea" id="content"></textarea>
                 </div>
             </div>
 
@@ -226,7 +226,6 @@
             var layer = layui.layer, laydate = layui.laydate, colorpicker = layui.colorpicker, form = layui.form;
             var calendar = null;
             var get = moment().format('YYYY-MM-DD');
-            var config = null;
             var objId = tplArg.objId;
             var $ = layui.$;
             var visit_password=null;
@@ -368,15 +367,23 @@
 
             function render(config) {
                 config = config || {};
+                // 配置生成
+                var c={};
+                config.firstDay= config.firstDay? config.firstDay:0;// 一周第一天显示日
+                config.c_onlyRead = 0;// 取消只读模式
+                c.showStartTime= config.c_dayTimeDisplay == 0 ? false : true;// 显开始束时间
+                c.showEndTime=  config.c_dayTimeDisplay == 0 ? false : true;// 显示结束时间
+                c.dayMaxEvents= config.eventLimit? Number(config.eventLimit):true;// true 自动。数字实际量
+                // console.log(c);
                 var obj2 = {
                     height: 'calc(100% - 30px)',
                     // width: 'calc(100% - 20px)',
                     expandRows: false,
                     locale: 'zh-cn',
                     fixedWeekCount: false,//false:根据实际情况4 5 6周
-                    firstDay: (Number(config.firstDay) ? 1 : 0),//一周第一天显示日
-                    displayEventTime: (Number(config.c_dayTimeDisplay) == 0 ? false : true),
-                    displayEventEnd: (Number(config.c_dayTimeDisplay) == 2 ? true : false),
+                    firstDay: config.firstDay,//一周第一天显示日
+                    displayEventTime: c.showStartTime,
+                    displayEventEnd: c.showEndTime,
                     weekNumbers: Number(config.weekNumbers),
                     // weekText: '',
                     // handleWindowResize:true,
@@ -402,7 +409,7 @@
                     selectable: true,
                     nowIndicator: true,
                     eventDisplay: 'block',
-                    dayMaxEvents: Number(config.eventLimit), // allow "more" link when too many events
+                    dayMaxEvents: c.dayMaxEvents, // allow "more" link when too many events
                     allDaySlot: false,
                     events: function (info, successCallback, failureCallback) {
                         // https://fullcalendar.io/docs/events-function
@@ -443,7 +450,7 @@
                     },
                     select: function (arg) {
                         // 判断只读模式
-                        if (Number(config.c_onlyRead)) {
+                        if (config.c_onlyRead==1) {
                             return false;
                         }
                         var data = {};
@@ -459,19 +466,31 @@
                         // }
                         //点击已有日程事件
                         // console.log(arg);
-                        var event = arg.event;
-                        // console.log(event);
-
                         var data = {};
+                        var event = arg.event;
                         data['start'] = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
                         data['end'] = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
                         data['title'] = event.title;
                         data['color'] = event.backgroundColor;
                         data['className'] = event.classNames[0];
                         data['content'] = event.extendedProps.content;
-                        // console.log(data);
-                        // moment().format('YYYY-MM-DD HH:mm:ss'); // "2020-07-30 21:11:01"
-                        openInfo(data, event);
+                        if(arg){
+                            app.runTpl("eventInfo", {
+                                title: event.title,
+                                create_time: event.extendedProps.create_time,
+                                start_time:  data['start'],
+                                end_time: data['end'],
+                                content:  event.extendedProps.content,
+                                onEditClick: function (layerIndex) {
+                                    // console.log(layerIndex)
+                                    openInfo(data, event);
+                                    layer.close(layerIndex)
+                                }
+                            })
+                        }else{
+                            openInfo(data, event);
+                        }
+                        
                     },
                     eventDrop: function (info) {
                         var event = info.event;
@@ -576,7 +595,6 @@
                 var title = data.title || '';
                 var color = data.color || '';
                 var layerButtons=[];
-                if (!Number(config.c_onlyRead)) {
                     
                     layerButtons=[
                         {
@@ -656,9 +674,7 @@
                         },)
                     }
                     
-                } else {
-                    var layeropentitle = '详情';
-                }
+                
                 app.base.layer({
                     type: 1,
                     shade: 0.5,
@@ -668,7 +684,7 @@
                     buttons: layerButtons,
                     success: function () {
                         // 如果只读模式需要删除不需要的元素
-                        if (Number(config.c_onlyRead)) {
+                        if (config.c_onlyRead==1) {
                             $('#class_select').parents('.layui-form-item').remove();
                             $('#color_input').parents('.layui-form-item').remove();
                             $('#submit').parents('.layui-form-item').remove();

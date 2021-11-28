@@ -3,7 +3,6 @@
 *.log
 .env
 .DS_Store
-/config/notebook/database.php
 /.history
 /DOC
-/application/calendar/controller/Test.php
+application/calendar/controller/Test.php

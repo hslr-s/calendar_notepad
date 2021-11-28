@@ -19,6 +19,9 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
     }
     init();
 
+    // 接口的域名
+    o.apiDomain='';
+
     // 加载api
     o.loadApi=function(name){
         var m={};
@@ -123,48 +126,54 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
         // 首页 日历列表+内容
         index: {
             path: '/',
-            url: "/calendar/obj/home"
+            url: "/obj/home"
         },
 
         home: {
             path: '/home',
-            url: "/calendar/obj/home"
+            url: "/obj/home"
         },
 
         // 登录
         login: {
             path: '/login',
-            url: "/calendar/login/login"
+            url: "/login/login"
         },
 
         // 注册
         register: {
             path: '/register',
-            url: "/calendar/login/register"
+            url: "/login/register"
         },
 
         // 链接注册
         linkRegister: {
             path: '/register/link',
-            url: "/calendar/login/linkRegister"
+            url: "/login/linkRegister"
         },
 
         // 全屏日历
         fullContent: {
             path: '/project/full_content',
-            url: "/calendar/obj/full_content"
+            url: "/obj/full_content"
         },
 
         // 项目设置
         objSetting: {
             path: '/project/setting',
-            url: "/calendar/obj/obj_setting"
+            url: "/obj/obj_setting"
         },
 
         // 项目设置
         adminIndex: {
             path: '/admin',
-            url: "/calendar/admin/index.html"
+            url: "/admin/index.html"
+        },
+
+        // 测试页面
+        test: {
+            path: '/test',
+            url: "/obj/test.html"
         },
 
     }

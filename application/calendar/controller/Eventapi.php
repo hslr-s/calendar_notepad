@@ -115,6 +115,24 @@ class Eventapi extends Tkcommon
         return $this->apiReturnSuccess($data);
     }
 
+    public function getInfo(){
+        $obj_id = input('get.obj_id');
+        $event_id = input('post.event_id');
+        Db::name('note_list')->where('obj_id', $obj_id)->where('id',$event_id)->find();
+    }
+
+    // 关键字搜索
+    public function searchWord() {
+        $obj_id = input('get.obj_id');
+        if (!$this->object_is_user($obj_id)) {
+            $this->apiReturnError(0, '此项目不是你的');
+        }
+        $word = input('post.word');
+        $list = Db::name('note_list')->where('obj_id', $obj_id)->where('(`title` LIKE "%'. $word.'%" OR `content` LIKE "%' . $word . '%")')->select();
+        // dump(Db::getLastSql());
+        $this->apiReturnSuccess($list);
+    }
+
     // http://tp51.cn/calendar/eventapi/buildHoliday?month=8
     public function buildHoliday(){
 
@@ -225,7 +243,7 @@ class Eventapi extends Tkcommon
         $where[]=['start_time','>=',$start];
         $where[]=['start_time','<=',$end];
         $where[]=['obj_id','=',$obj_id];
-        $data=Db::name('note_list')->where($where)->field('start_time start,end_time end,title,color,class_name className,id event_id,id,content')->select();
+        $data=Db::name('note_list')->where($where)->field('start_time start,end_time end,title,color,class_name className,id event_id,id,content,create_time')->select();
         return $this->apiReturnSuccess( $data);
     }
 }

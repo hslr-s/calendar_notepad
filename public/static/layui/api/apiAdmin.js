@@ -1,12 +1,12 @@
 // API 接口 - 管理平台
 
 layui.define(['jquery', 'layer'], function (exports) {
-    var domain = "", postdata={}
+    var domain = app.base.apiDomain +"/adminapi/", postdata={}
     o={}
 
     // 获取用户列表链接地址
     o.urlGetUserList = function () {
-        return '/calendar/adminapi/getUserList';
+        return domain +'/getUserList';
     }
     
 
@@ -17,22 +17,22 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata.password=password;
         postdata.host = host;
         postdata.port = port;
-        app.base.ajaxPost(domain + "/calendar/adminapi/saveMailConfig", postdata, okCallback, errCallback)
+        app.base.ajaxPost(domain + "saveMailConfig", postdata, okCallback, errCallback)
     }
 
     // 获取邮箱配置
     o.getMailConfig = function (okCallback) {
-        app.base.ajaxGet(domain + "/calendar/adminapi/getMailConfig", okCallback)
+        app.base.ajaxGet(domain + "getMailConfig", okCallback)
     }
 
     // 保存其他系统
     o.saveSystemOtherConfig = function (config,okCallback, errCallback) {
-        app.base.ajaxPost(domain + "/calendar/adminapi/saveSystemOtherConfig", config, okCallback, errCallback)
+        app.base.ajaxPost(domain + "saveSystemOtherConfig", config, okCallback, errCallback)
     }
 
     // 获取其他系统
     o.getSystemOtherConfig = function (okCallback) {
-        app.base.ajaxGet(domain + "/calendar/adminapi/getSystemOtherConfig", okCallback)
+        app.base.ajaxGet(domain + "getSystemOtherConfig", okCallback)
     }
 
     // 发送测试邮件
@@ -43,7 +43,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         postdata.host = host;
         postdata.port = port;
         postdata.to_user = to_user;
-        app.base.ajaxPost(domain + "/calendar/adminapi/sendTestMail", postdata, okCallback, errCallback)
+        app.base.ajaxPost(domain + "sendTestMail", postdata, okCallback, errCallback)
     }
 
     // 编辑测试邮件
@@ -58,12 +58,12 @@ layui.define(['jquery', 'layer'], function (exports) {
             postdata.user_id = data.user_id;
         }
         
-        app.base.ajaxPost(domain + "/calendar/adminapi/editUser", postdata, okCallback, errCallback)
+        app.base.ajaxPost(domain + "editUser", postdata, okCallback, errCallback)
     }
 
     // 删除用户
     o.delete = function (user_id,okCallback,errCallback) {
-        app.base.ajaxPost(domain + "/calendar/adminapi/delete", { 'user_id': user_id }, okCallback, errCallback)
+        app.base.ajaxPost(domain + "delete", { 'user_id': user_id }, okCallback, errCallback)
     }
 
 
