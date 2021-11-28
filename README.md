@@ -43,7 +43,9 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 #### 访问方式：
 
-    [你的ip或域名+端口]/calendar
+    v4.0及以上(包含v4)：[你的ip或域名+端口]
+    
+    v4.0之前：[你的ip或域名+端口]/calendar
 
 
 默认账号密码：
