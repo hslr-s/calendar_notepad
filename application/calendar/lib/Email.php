@@ -22,6 +22,7 @@ class Email {
         $config['password'] = $configs['password']; //密码
         $config['from'] = $configs['from']; //发件人邮箱
         $config['secure'] = $configs['secure']; //加密方式
+        $config['port'] = $configs['port']; //端口
         return $this->sendMailBase($config, $toMail, $title, $content);
     }
 
