@@ -34,6 +34,16 @@ layui.define(['jquery', 'layer'], function (exports) {
         app.base.ajaxGet(domain + "getOpenInfo", callback, errCallback)
     }
 
+    // 重置密码的验证码
+    o.getResetPasswordVCode = function(username, callback, errCallback){
+        app.base.ajaxPost(domain + "getResetPasswordVCode", { username: username}, callback, errCallback)
+    }   
+
+    // 重置密码
+    o.resetPassword = function (username,vcode,password,callback, errCallback) {
+        app.base.ajaxPost(domain + "resetPassword", { username: username, vcode: vcode, password: password}, callback, errCallback)
+    }
+
 
 
 

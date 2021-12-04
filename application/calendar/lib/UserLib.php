@@ -66,4 +66,9 @@ class UserLib  {
         $returnData['data']= $res;
         return $returnData;
     }
+
+    // 获取用户详情
+    public static function getInfo($uid){
+        return Db::name('user')->where('id',$uid)->find();
+    }
 }

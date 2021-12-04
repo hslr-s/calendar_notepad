@@ -37,10 +37,19 @@
                     <div class="layui-tab-item layui-show">
                         <blockquote class="layui-elem-quote">此邮箱是用作用户找回密码，用户注册等操作下发的系统级别邮箱。</blockquote>
                         <form class="layui-form" action=""  lay-filter="MailInfoForm">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">发信人邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="username" required lay-verify="required" placeholder="请输入发信人邮箱" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+
                             <div class="layui-form-item">
                                 <label class="layui-form-label">服务器地址</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="host" required lay-verify="required" placeholder="请输入邮箱服务器地址" autocomplete="off"
+                                    <input type="text" name="host" required lay-verify="required" placeholder="请输入SMTP 服务器地址" autocomplete="off"
                                         class="layui-input">
                                 </div>
                             </div>
@@ -48,31 +57,30 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">服务器端口</label>
                                 <div class="layui-input-inline">
-                                    <input type="number" name="port" required lay-verify="required" placeholder="请输入邮箱服务器端口号" autocomplete="off"
+                                    <input type="number" name="port" required lay-verify="required" placeholder="请输入SMTP 端口" autocomplete="off"
                                         class="layui-input">
                                 </div>
-                                <div class="layui-form-mid layui-word-aux">默认是25</div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">邮箱</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="username" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off"
-                                        class="layui-input">
-                                </div>
-                                
+                                <div class="layui-form-mid layui-word-aux">常用:25,465,587</div>
                             </div>
 
                             <div class="layui-form-item">
                                 <label class="layui-form-label">邮箱密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="password" required lay-verify="required" placeholder="请输入密码或授权码" autocomplete="off"
+                                    <input type="text" name="password" required lay-verify="required" placeholder="请输入发信人密码或授权码" autocomplete="off"
                                         class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">部分邮箱是授权码</div>
                             </div>
 
-                            
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">加密方式</label>
+                                <div class="layui-input-inline">
+                                    <select name="secure" lay-verify="required">
+                                        <option value="tls">TLS</option>
+                                        <option value="ssl">SSL(加密连接)</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
@@ -219,7 +227,7 @@
         form.on('submit(sendTestMail)', function (data) {
             var d= data.field;
             layer.prompt({ title: '请输入要接收测试邮件的邮箱账号', formType: 0 }, function (text, index) {
-                apiAdmin.sendTestMail(d.username,d.password,d.host,d.port, text,function(){
+                apiAdmin.sendTestMail(d.username,d.password,d.host,d.port, d.secure,text,function(){
                     layer.msg('测试邮箱已发送，请去邮箱查收');
                 },function(msg){
                     layer.msg(msg);
@@ -234,7 +242,7 @@
         // 保存邮件信息
         form.on('submit(submitMailInfo)', function (data) {
             var d = data.field;
-            apiAdmin.saveMailConfig(d.username, d.password, d.host, d.port, function () {
+            apiAdmin.saveMailConfig(d.username, d.password, d.host, d.port,d.secure, function () {
                 layer.msg('保存已生效');
             }, function (msg) {
                 layer.msg(msg);

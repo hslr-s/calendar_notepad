@@ -22,7 +22,7 @@
     <script type="text/javascript">
         var app;
         layui.config({
-            base: '/static/layui/extends/'
+            base: '/static/app/'
             , version: true//禁止浏览器缓存，此处建议禁止
         })
         layui.use(['layer', 'jquery', 'app', 'my_base'], function () {
@@ -32,9 +32,9 @@
             app.init({
                 contentElemId: '#page-content',
                 config: {
-                    viewUrlPrefix: "/calendar/",
+                    // viewUrlPrefix: "/calendar/",
                     templatePath: "/static/template/",
-                    viewUrlSuffix:'.html'
+                    // viewUrlSuffix:'.html'
                 },
  
                 success: function () {

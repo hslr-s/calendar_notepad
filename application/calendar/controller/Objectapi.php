@@ -102,13 +102,7 @@ class Objectapi extends Tkcommon
     // 添加一个项目
     public function add(){
         $name = input('post.name');
-        $insertData['name']=$name;
-        $insertData['create_time'] = date('Y-m-d H:i:s');
-        $insertData['update_time'] = $insertData['create_time'];
-        $insertData['u_id'] = $this->userId;
-        
-        $id=Db::name('obj_list')->insertGetId($insertData);
-        $insertData['id']=$id;
+        $insertData['id']=libProject::addGetId($name,$this->userId);
         return $this->apiReturnSuccess($insertData);
     }
 

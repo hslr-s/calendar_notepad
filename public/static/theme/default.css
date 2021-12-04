@@ -74,3 +74,14 @@ body .fc-v-event,body .fc-timegrid-event-harness .fc-v-event{
     border-color: #ffab2e;
     background-color: #ffab2e;
 }
+
+body .search-list-item-left:hover{
+    color: #ffc774;
+}
+
+/* 主题文字浮动色 */
+body .theme-font-color-hover:hover{
+   color: #ffc774; 
+   transition: color 0.15s;
+}
+

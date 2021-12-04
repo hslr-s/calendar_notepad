@@ -2,6 +2,7 @@
 namespace app\calendar\controller;
 use think\Db;
 use think\facade\App;
+use app\calendar\lib\Event as libEvent;
 use app\calendar\lib\Project as libProject;
 class Eventapi extends Tkcommon
 {
@@ -45,17 +46,7 @@ class Eventapi extends Tkcommon
     public function add(){
         $data=input('post.');
         $obj_id=input('get.obj_id');
-
-        $insertData['title']=$data['title'];
-        $insertData['color']=$data['color'];
-        $insertData['class_name']=isset($data['class_name'])?$data['class_name']:'';
-        $insertData['content']=$data['content'];
-        $insertData['start_time']=$data['start_time'];
-        $insertData['end_time']=$data['end_time'];
-        $insertData['create_time']=date('Y-m-d H:i:s');
-        $insertData['obj_id']=$obj_id;
-        $event_id=Db::name('note_list')->insertGetId($insertData);
-        Db::name('obj_list')->where('id', $obj_id)->update(['update_time'=> date('Y-m-d H:i:s')]);
+        $event_id=libEvent::addGetId($data, $obj_id);
         return json(['code'=>1,'event_id'=>$event_id]);
     }
 
@@ -117,6 +108,9 @@ class Eventapi extends Tkcommon
 
     public function getInfo(){
         $obj_id = input('get.obj_id');
+        if (!$this->object_is_user($obj_id)) {
+            $this->apiReturnError(0, '此项目不是你的');
+        }
         $event_id = input('post.event_id');
         Db::name('note_list')->where('obj_id', $obj_id)->where('id',$event_id)->find();
     }

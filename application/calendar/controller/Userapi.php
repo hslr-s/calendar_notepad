@@ -30,13 +30,23 @@ class Userapi extends Tkcommon
     // 修改密码
     public function updatePassword() {
         $data['id']=$this->userId;
+        $old= input('post.old_password/s');
         $data['password'] = input('post.password/s');
-        $res = UserLib::editUser($data);
-        if ($res['err']) {
-            return $this->apiReturnError(0, $res['err']);
-        } else {
-            $this->apiReturnSuccess(0);
+        $userInfo=UserLib::getInfo($data['id']);
+        if($userInfo['password']!= md5($old)){
+            return $this->apiReturnError(0, '旧密码不正确');
         }
+        if($userInfo){
+            $res = UserLib::editUser($data);
+            if ($res['err']) {
+                return $this->apiReturnError(0, $res['err']);
+            } else {
+                $this->apiReturnSuccess(0);
+            }
+        }else{
+            return $this->apiReturnError(0, '用户不存在吧');
+        }
+       
     }
 
 

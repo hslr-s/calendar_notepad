@@ -179,8 +179,9 @@
                     </select>
                 </div>
             </div>
-
-            <div class="layui-form-item">
+            
+            <!-- 取消颜色值（自定义太多影响样式错乱） -->
+            <!-- <div class="layui-form-item">
                 <label class="layui-form-label">颜色值</label>
                 <div style="margin-left: 30px;">
                     <div class="layui-input-inline" style="width: 120px;">
@@ -190,7 +191,7 @@
                         <div id="test-form"></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="layui-form-item">
                 <label class="layui-form-label">开始时间</label>
@@ -230,7 +231,7 @@
             var $ = layui.$;
             var visit_password=null;
             var config={};//项目配置
-
+            // var searchLayerIndex=0;// 查询的弹窗index
             // 接口API
             var apiObject=layui.apiObject, apiEvent = layui.apiEvent, apiStyle = layui.apiStyle;
 
@@ -241,7 +242,7 @@
             // ====================
             // 组件自定义按钮
             // ====================
-            var leftButtonsText = "setting";
+            var leftButtonsText = "setting,search";
             var customButtons = {
                 setting: {
                     hint: "管理平台",
@@ -249,6 +250,65 @@
                     click: function () {
                         app.runTpl('setting/objectSetting', {
                             objId: objId
+                        })
+                    }
+                },
+                search: {
+                    hint: "查询事件",
+                    icon: ' custom-button layui-icon-search',
+                    click: function () {
+                        // if(searchLayerIndex!=0){
+                        //     // 保证只打开一个弹窗
+                        //     layer.restore(searchLayerIndex);
+                        //     return;
+                        // }
+                        // 打开事件详情组件
+                        app.runTpl("eventSearch", { 
+                            objId: objId ,
+                            onClickInfo:function(data){
+                                app.runTpl("eventInfo", {
+                                    title: data.title,
+                                    create_time: data.create_time,
+                                    start_time: data['start_time'],
+                                    end_time: data['end_time'],
+                                    content: data.content,
+                                    onEditClick: function (layerIndex) {
+                                        var event={};
+                                        event['start'] = data.start_time;
+                                        event['end'] = data.end_time;
+                                        event['title'] = data.title;
+                                        event['className'] = data.className;
+                                        event['color'] = data.color;
+                                        event['content'] = data.content;
+                                        event['id'] = data.id;
+                                        openInfo(event, event);
+                                        layer.close(layerIndex)
+                                    }
+                                })
+                            },
+                            onClickEdit:function(data){
+                                var event = {};
+                                event['start'] = data.start_time;
+                                event['end'] = data.end_time;
+                                event['title'] = data.title;
+                                event['className'] = data.className;
+                                event['color'] = data.color;
+                                event['content'] = data.content;
+                                event['id'] = data.id;
+                                openInfo(event, event);
+                            },
+                            onClickLocation:function(data){
+                                calendar.gotoDate(data.start_time.slice(0,10))
+                            },
+                            getLayerIndex(index){
+                                console.log(index)
+                                // searchLayerIndex=index;
+                            },
+                            end:function(){
+                                // searchLayerIndex = 0;
+                            }
+
+                            
                         })
                     }
                 },

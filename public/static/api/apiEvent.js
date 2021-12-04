@@ -56,7 +56,11 @@ layui.define(['jquery', 'layer'], function (exports) {
         app.base.ajaxPost(domain + "getList?obj_id=" + objId, postdata, callback, pwdCallback)
     }
 
-    
+    o.searchByWord = function (objId, word,callback, pwdCallback) {
+        postdata = {}
+        postdata.word = word;
+        app.base.ajaxPost(domain + "searchWord?obj_id=" + objId, postdata, callback, pwdCallback)
+    }
 
 
 

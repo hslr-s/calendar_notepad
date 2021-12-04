@@ -5,6 +5,8 @@ use think\Db;
 
 use app\calendar\lib\Email;
 use app\calendar\lib\Config;
+use app\calendar\lib\Project as libProject;
+use app\calendar\lib\Event as libEvent;
 use app\calendar\lib\Verification;
 
 class Loginapi extends Common{
@@ -66,7 +68,7 @@ class Loginapi extends Common{
         // dump(cache('register_' . $mail));
 
         $mailObj = new Email();
-        if($mailObj->sendMail($mail,'欢迎注册日历记事本','你的注册验证码是:'.$code)){
+        if($mailObj->sendTplMail($mail,'欢迎注册日历记事本','你的注册验证码是:'.$code)){
             $this->apiReturnSuccess([]);
         }else{
             $this->apiReturnError(0, '邮件发送失败，请联系管理员');
@@ -80,7 +82,7 @@ class Loginapi extends Common{
         $name = input('post.name');
         $password = input('post.password');
         $callback_url = input('post.callback_url');
-        $openRegist=Config::get('sys_open_regist');
+        $openRegist=Config::get('sys_other_open_register');
 
         if(!$openRegist){
             $this->apiReturnError(0, '管理员未开放注册功能，请联系管理员');
@@ -113,7 +115,7 @@ class Loginapi extends Common{
         cache('register_' . $code, $registerInfo, 3600);
         $url= $callback_url.'?code='.$code;
         $mailObj = new Email();
-        if ($mailObj->sendMail($mail, '欢迎注册日历记事本', '请点击下面链接完成注册（1小时内有效）：<br>' . $url )) {
+        if ($mailObj->sendTplMail($mail, '欢迎注册日历记事本', '请点击下面链接完成注册（1小时内有效）：<br>' . $url )) {
             $this->apiReturnSuccess([]);
         } else {
             $this->apiReturnError(0, '邮件发送失败，请联系管理员');
@@ -140,19 +142,83 @@ class Loginapi extends Common{
         $insert['username']= $insert['name'] =  $info['username'];
         $insert['password'] = md5($info['password']);
         $insert['create_time'] = date('Y-m-d H:i:s');
+        $insert['status'] = 1;
+        $insert['auth_id'] = 2;
         $insert['name'] = $info['name'];
-        Db::name('user')->insert($insert);
-        cache('register_' . $code,null); //删除缓存
+        $user_id=Db::name('user')->insertGetId($insert);
+
+        // 添加演示项目和事件
+        $projectid=libProject::addGetId('演示项目', $user_id);
+        $addData['title']='注册日历记事本';
+        $addData['content'] = '今天我注册了日历记事本，从今天起我要开始记录生活的点点滴滴:)。每天都是新的开始，多年后回顾今天，那是一件多么令人怀念的事啊！';
+        $addData['create_time'] = date('Y-m-d H:i:s');
+        $addData['start_time'] = date('Y-m-d H:i:s');
+        $addData['end_time'] = date('Y-m-d H:i:s',strtotime(date('Y-m-d H:i:s').'+1 hour'));
+        libEvent::addGetId($addData, $projectid);
+
+        //删除缓存
+        cache('register_' . $code,null); 
 
         // 注册完成发送邮件
         $mailObj = new Email();
-        $mailObj->sendMail($info['username'], '【日历记事本】注册成功', '终于等到你了' . $info['name'].'，现在开始记录你的生活吧。');
+        $mailObj->sendTplMail($info['username'], '【日历记事本】注册成功', '终于等到你了' . $info['name'].'，现在开始记录你的生活吧。');
         $this->apiReturnSuccess([]);
     }
 
     // 清空所有的登录信息
     public function cleanLogin(){
         Cache::clear('Calendar_login');
+    }
+
+
+    // 重置密码相关
+    // 获取验证码
+    public function getResetPasswordVCode() {
+        $username = input('post.username');
+
+        $code = $this->makePassword(6);
+
+        $info=Db::name('user')->where('username', $username)->find();
+        if(!$info){
+            $this->apiReturnError(0, '此账号未注册过平台，请先注册');
+        }
+        // 保存到缓存
+        cache('ResetPassword_' . $username,['vcode'=> $code,'user_id'=> $info['id']],1800);
+        
+        // 注册完成发送邮件
+        $mailObj = new Email();
+        $res=$mailObj->sendTplMail($username, '日历记事本 你正在重置密码', '你的验证码是：' . $code . '，有效期30分钟。');
+        
+        if($res){
+            $this->apiReturnSuccess([]);
+        }else{
+            dump($mailObj->errorMsg);
+            $this->apiReturnError(0,'邮件发送失败，请联系管理员');
+        }
+        
+    }
+
+    // 根据验证码重置密码
+    public function resetPassword() {
+        $username = input('post.username');
+        $vcode = input('post.vcode');
+        $password = input('post.password');
+
+        // 缓存
+        $cache_info = cache('ResetPassword_' . $username);
+        cache('ResetPassword_' . $username,null);
+        if(!$cache_info || $cache_info['vcode']!= $vcode){
+            $this->apiReturnError(0, '验证码不正确,或者已失效');
+        }
+
+        // 验证密码
+        if(!Verification::checkPassword($password)){
+            $this->apiReturnError(0, '密码格式不正确，格式必须6-18位之间，可以是小写字母、大写字母、数字或者是".","@","_"');
+        }
+
+        $res=Db::name('user')->where('id', $cache_info['user_id'])->update(['password'=>md5($password)]);
+
+        $this->apiReturnSuccess(['res'=> $res]);
     }
 
 

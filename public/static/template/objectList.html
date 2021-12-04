@@ -235,7 +235,7 @@
                         }, function (value, index, elem) {
 
                             $.ajax({
-                                url: '/objectapi/add',
+                                url: '/calendar/objectapi/add',
                                 type: "post",
                                 data: {
                                     "name": value,
@@ -248,8 +248,13 @@
                             })
                             layer.close(index);
                         });
-                    }else if(obj.id == 102){
+                    } else if(obj.id == 102){
+                        // 管理平台
                         app.go('/admin')
+                    } else if (obj.id == 99) {
+                        app.runTpl("user/updateInfo")
+                    } else if (obj.id == 100) {
+                        app.runTpl("user/updatePassword")
                     }
                 }
                 , style: 'width: 100px;'

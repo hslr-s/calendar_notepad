@@ -1,3 +1,5 @@
+
+
 <style type="text/css">
     @media only screen and (min-width: 450px) {
         .a {
@@ -86,48 +88,41 @@
     }
 </style>
 <div class='layui-main a'>
-    <h2  class="title">日历记事本 - 注册</h2>
+    <h2  class="title">日历记事本 - 登录</h2>
 
-    <form class="layui-form layui-form-pane" action="" method="POST" lay-filter="register">
+    <form class="layui-form layui-form-pane" action="" method="POST">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
-            <div class="layui-input-block">
-                <input type="text" name="username" required lay-verify="required" placeholder="请输入邮箱作为账号" class="layui-input">
-            </div>
+            <input type="text" name="username" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">昵称</label>
-            <div class="layui-input-block">
-                <input type="text" name="name" required lay-verify="required" placeholder="请输入昵称" class="layui-input">
-            </div>
+            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
         </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" class="layui-input">
+        
+        <!-- <div class="verification layui-inline">
+            <div class="layui-inline ver-img" title="单击刷新">
+                <img src="http://enianteam.com/captcha.html" alt="captcha" onclick="this.src=this.src+'?'" />
             </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">确认密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="password_again" required lay-verify="required" placeholder="请再输入一次密码" class="layui-input">
+            <div class="layui-inline ver-input">
+                <input type="password" name="captcha"  lay-verify="" placeholder="请输入验证码" autocomplete="off" class="layui-input">
             </div>
-        </div>
+        </div> -->
 
+    
         
         
         <div class="layui-form-item" align="center">
-            <a class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" id='btn_regster'>注册</a>
+            <a class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" id='btn_login'>登录</a>
         </div>
+        <a class="register-username layui-hide" >注册账号</a>
+        <a class="enian-float-right" >忘记密码?</a>
         
     </form>
 </div>
 
         
+
 
 <script>
     app.base.loadApi('apiLogin');
@@ -141,27 +136,54 @@
                 ,code:false
             };
 
-        app.base.setTitle('日历记事本 - 注册');
-       
-        $('#btn_regster').click(function(){
-            var data= form.val('register');
-            if(data.password!==data.password_again){
-                layer.msg('两次密码输入不一致');
-                return;
+        // 获取基础信息
+        layui.apiLogin.getOpenInfo(function(d){
+            if(d.open_register=='1'){
+                $('.register-username').removeClass('layui-hide');
             }
-            var loading_layer= layer.msg('加载中', {
-                icon: 16
-                , shade: 0.01
-                , time: 0
-            });
-            layui.apiLogin.registerSubmit(data.username, data.password,data.name,function(){
-                layer.close(loading_layer);
-                layer.msg('邮件已成功发送至邮箱，请前去邮箱进行注册！');
-                app.go(app.base.route.login);
+        })
+
+        app.base.setTitle('日历记事本 - 登录');
+        
+        // 跳转注册页
+        $('.register-username').click(function(){
+            app.go(app.base.route.register);
+        })
+
+        // 重置密码
+        $('.enian-float-right').click(function () {
+            app.go(app.base.route.forgetPassword);
+        })
+
+        
+
+       
+
+        $('#btn_login').click(function(){
+            layui.apiLogin.check($('input[name="username"]').val(), $('input[name="password"]').val(),function(){
+                layer.closeAll();
+                layer.msg('登录成功');
+                window.clearInterval(timeOut);//关闭定时
+                app.go(app.base.route.home)
             },function(msg){
-                layer.msg(msg)
+                 layer.msg(msg);
             })
         })
-     
+       
+        function getVerificationCode(callback){
+            $.ajax({
+                type:"post",
+                url:"/index/login/verifcationcode/",
+                success:function(r){
+                    if(r.code==1){
+                        callback(r.verifcationCode);
+                    }else{
+                        layer.alert(r.msg);
+                    }
+                },
+                async:true
+            });
+        }
+        // layer.msg('hello');
     });
 </script>

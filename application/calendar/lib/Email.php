@@ -6,9 +6,9 @@ use think\Db;
 use think\Controller;
 
 class Email {
+    public $errorMsg='';
 
-
-    // 发送邮件，读取系统配置
+    // 发送邮件，统一模板
     public function sendTplMail($toMail, $title, $content) {
         return $this->sendMail($toMail, $title, $content);
     }
@@ -21,7 +21,7 @@ class Email {
         $config['username'] = $configs['username']; //账号
         $config['password'] = $configs['password']; //密码
         $config['from'] = $configs['from']; //发件人邮箱
-        // dump($config);die;
+        $config['secure'] = $configs['secure']; //加密方式
         return $this->sendMailBase($config, $toMail, $title, $content);
     }
 
@@ -42,7 +42,6 @@ class Email {
     // $config['from'] = 'admin@example.com'; //发件人邮箱
     public function sendMailBase($config,$to, $title, $content) {
         $config['port']=isset($config['port'])? $config['port']:25;
-        $config['SMTPSecure'] = isset($config['SMTPSecure']) ? $config['SMTPSecure'] : 'tls';
         require_once __DIR__ . '/../../../extend/PHPMailer/PHPMailer.php';
         $mail = new \PHPMailer(false);
         //是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
@@ -54,7 +53,7 @@ class Email {
         //域名邮箱的服务器地址
         $mail->Host = $config['host'];
         //设置使用ssl加密方式登录鉴权
-        $mail->SMTPSecure = 'tls';
+        $mail->SMTPSecure = isset($config['secure'])? $config['secure']: 'tls';
         //设置ssl连接smtp服务器的远程服务器端口号，以前的默认是25，但是现在新的好像已经不可用了 可选465或587
         $mail->Port = $config['port'];
         //设置smtp的helo消息头 这个可有可无 内容任意
@@ -62,7 +61,7 @@ class Email {
         //设置发件人的主机域 可有可无 默认为localhost 内容任意，建议使用你的域名
         //$mail->Hostname = 'localhost';
         // //设置发送的邮件的编码 可选GB2312 我喜欢utf-8 据说utf8在某些客户端收信下会乱码
-        // $mail->CharSet = 'UTF-8';
+        $mail->CharSet = 'UTF-8';
         //设置发件人姓名（昵称） 任意内容，显示在收件人邮件的发件人邮箱地址前的发件人姓名
         $mail->FromName = $config['from_name'];
         //smtp登录的账号 这里填入字符串格式的qq号即可
@@ -93,6 +92,7 @@ class Email {
         if ($status) {
             return true;
         } else {
+            $this->errorMsg= $mail->ErrorInfo;
             // dump($mail->ErrorInfo);
             return false;
         }

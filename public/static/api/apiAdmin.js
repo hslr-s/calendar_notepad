@@ -11,12 +11,13 @@ layui.define(['jquery', 'layer'], function (exports) {
     
 
     // 保存邮箱配置
-    o.saveMailConfig = function (username, password, host, port, okCallback, errCallback) {
+    o.saveMailConfig = function (username, password, host, port, secure, okCallback, errCallback) {
         var postdata={};
         postdata.username = username;
         postdata.password=password;
         postdata.host = host;
         postdata.port = port;
+        postdata.secure = secure;
         app.base.ajaxPost(domain + "saveMailConfig", postdata, okCallback, errCallback)
     }
 
@@ -36,13 +37,14 @@ layui.define(['jquery', 'layer'], function (exports) {
     }
 
     // 发送测试邮件
-    o.sendTestMail = function (username, password, host, port, to_user, okCallback, errCallback) {
+    o.sendTestMail = function (username, password, host, port,  secure, to_user,okCallback, errCallback) {
         var postdata = {};
         postdata.username = username;
         postdata.password = password;
         postdata.host = host;
         postdata.port = port;
         postdata.to_user = to_user;
+        postdata.secure = secure;
         app.base.ajaxPost(domain + "sendTestMail", postdata, okCallback, errCallback)
     }
 

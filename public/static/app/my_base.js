@@ -28,14 +28,14 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
         
         if (typeof name== 'string' ){
             if (!layui[name]) {
-                m[name] = '{/}/static/layui/api/' + name
+                m[name] = '{/}/static/api/' + name
             }
         }else{
             for (let i = 0; i < name.length; i++) {
                 const element = name[i];
                 if (!layui[element]){
                     // console.log('加载欧快', element);
-                    m[element] = '{/}/static/layui/api/' + element
+                    m[element] = '{/}/static/api/' + element
                 }
                 
             }
@@ -126,54 +126,60 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
         // 首页 日历列表+内容
         index: {
             path: '/',
-            url: "/obj/home"
+            url: "/static/pages/obj/home.html"
         },
 
         home: {
             path: '/home',
-            url: "/obj/home"
+            url: "/static/pages/obj/home.html"
         },
 
         // 登录
         login: {
             path: '/login',
-            url: "/login/login"
+            url: "/static/pages/login/login.html"
         },
 
         // 注册
         register: {
             path: '/register',
-            url: "/login/register"
+            url: "/static/pages/login/register.html"
+        },
+
+        // 找回密码
+        forgetPassword: {
+            path: '/forgetPassword',
+            url: "/static/pages/login/forgetPassword.html"
         },
 
         // 链接注册
         linkRegister: {
             path: '/register/link',
-            url: "/login/linkRegister"
+            url: "/static/pages/login/linkRegister.html"
         },
 
         // 全屏日历
         fullContent: {
             path: '/project/full_content',
-            url: "/obj/full_content"
+            url: "/static/pages/obj/full_content.html"
         },
 
         // 项目设置
         objSetting: {
             path: '/project/setting',
-            url: "/obj/obj_setting"
+            url: "/static/pages/obj/obj_setting.html"
         },
 
         // 项目设置
         adminIndex: {
             path: '/admin',
-            url: "/admin/index.html"
+            url: "/static/pages/admin/index.html"
         },
 
         // 测试页面
         test: {
             path: '/test',
-            url: "/obj/test.html"
+            url: "/static/pages/obj/test.html"
         },
 
     }
@@ -197,7 +203,6 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
         }
     }
 
-    console.log(o.route, transRoute);
 
     // =================
     // 加载页面之前-缓存

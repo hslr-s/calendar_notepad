@@ -76,6 +76,7 @@ class Adminapi extends Tkcommon
         $config['from'] = input('post.username'); //发件人邮箱
         $config['host'] = input('post.host');
         $config['port'] = input('post.port');
+        $config['secure'] = input('post.secure');
         $toUser = input('post.to_user'); //收件人
         if(!Verification::checkMail($config['username'])){
             $this->apiReturnError(0, '账号(邮箱)的格式不正确');
@@ -104,6 +105,7 @@ class Adminapi extends Tkcommon
         $config['password'] = input('post.password'); //密码
         $config['from'] = input('post.username'); //发件人邮箱
         $config['port'] = input('post.port'); //端口
+        $config['secure'] = input('post.secure');
         if (!Verification::checkMail($config['username'])) {
             $this->apiReturnError(0, '账号(邮箱)的格式不正确');
         }
