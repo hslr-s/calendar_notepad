@@ -27,9 +27,7 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 #### 开发vlog视频
 
-[开发vlog视频（西瓜视频）](https://www.ixigua.com/7026667370643096095)
-
-[开发vlog视频（哔哩哔哩）](https://space.bilibili.com/27407696)
+[[头条、西瓜]](https://www.ixigua.com/7026667370643096095) [[哔哩哔哩]](https://space.bilibili.com/27407696)
 
 #### 更新说明
 > 首次安装用户，直接看安装教程即可
@@ -46,9 +44,9 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 #### 访问方式：
 
-    v4.0及以上(包含v4)：[你的ip或域名+端口]
+    新版本：[你的ip或域名+端口]
     
-    v4.0之前：[你的ip或域名+端口]/calendar
+    旧版本：[你的ip或域名+端口]/calendar
 
 
 默认账号密码：
