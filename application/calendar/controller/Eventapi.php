@@ -122,7 +122,7 @@ class Eventapi extends Tkcommon
             $this->apiReturnError(0, '此项目不是你的');
         }
         $word = input('post.word');
-        $list = Db::name('note_list')->where('obj_id', $obj_id)->where('(`title` LIKE "%'. $word.'%" OR `content` LIKE "%' . $word . '%")')->select();
+        $list = Db::name('note_list')->where('obj_id', $obj_id)->where('(`title` LIKE "%'. $word.'%" OR `content` LIKE "%' . $word . '%")')->order('create_time Desc')->select();
         // dump(Db::getLastSql());
         $this->apiReturnSuccess($list);
     }

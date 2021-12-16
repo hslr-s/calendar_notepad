@@ -44,6 +44,11 @@
         font-size: 16px;
     }
     .tpl-event_search_list-item-content{
+        font-size: 12px;
+        color: #999;
+    }
+    .tpl-event_search_list-item-time{
+        font-size: 11px;
         color: #999;
     }
 </style>
@@ -58,13 +63,16 @@
 <script type="text/html" id="tpl-event_search_list">
     
         {{# layui.each(d.list, function(index, item){ }}
-        <div class="tpl-event_search_list-item" title="创建于：{{item.create_time}}; 起始:{{item.start_time}}~{{item.end_time}}">
+        <div class="tpl-event_search_list-item" title="创建时间：{{item.create_time}} ">
             <div class="layui-inline search-list-item-left theme-font-color-hover" data-index="{{index}}">
                 <div class="tpl-event_search_list-item-title layui-elip" title="{{item.title}}">
                     {{item.title}}
                 </div>
+                <div class="tpl-event_search_list-item-time layui-elip">
+                    {{item.start_time}} ~ {{item.end_time}}
+                </div>
                 <div class="tpl-event_search_list-item-content layui-elip">
-                    {{item.content?item.content:'（无内容）'}}
+                    {{item.content?item.content:'无内容'}}
                 </div>
             </div>
             <div class="layui-inline search-list-item-right" data-index="{{index}}">

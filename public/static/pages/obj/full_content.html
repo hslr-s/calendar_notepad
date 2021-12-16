@@ -67,6 +67,16 @@
         app.runTpl("objectContent", {
             elem: ".page_box_style",
             objId: obj_id,
+            leftButtons: [
+                {
+                    name: 'full-screen',
+                    hint: '返回',
+                    icon: ' custom-button layui-icon-left',
+                    onClick: function () {
+                        window.history.go(-1);
+                    }
+                }
+            ]
             // onItemClick: function (item) {
             //     // // app.goToPage('/obj/getpage/p/iframe?obj_id=' + item.obj_id)
             //     // app.goToPage('obj/getpage/p/index6?obj_id=' + item.obj_id)

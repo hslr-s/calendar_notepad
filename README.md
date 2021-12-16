@@ -11,6 +11,10 @@
 #### 软件架构
 ThinkPHP5.1 + 前端Layui + Fullcalendar
 
+#### 更新说明
+
+[查看更新说明](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md)
+
 #### 软件导图（PHP版本）
 ![思维导图](https://images.gitee.com/uploads/images/2021/1027/194002_7fb7fdbf_1717198.png "2021-10-27 (2).png")
 
@@ -29,10 +33,7 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 [[头条、西瓜]](https://www.ixigua.com/7026667370643096095) [[哔哩哔哩]](https://space.bilibili.com/27407696)
 
-#### 更新说明
-> 首次安装用户，直接看安装教程即可
 
-[查看更新说明](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md)
 
 #### 安装教程
 
