@@ -32,7 +32,7 @@ class Holiday extends Tkcommon
         try {
             foreach ($list as $key => $value) {
                 $insertData['start_time'] = $value['date'] . ' 00:00:00';
-                $insertData['end_time'] = date('Y-m-d 00:00:00', strtotime($key . '+ 1 day'));
+                $insertData['end_time'] = date('Y-m-d 00:00:00', strtotime($value['date'] . '+ 1 day'));
                 $insertData['create_time'] = date('Y-m-d H:i:s');
                 $insertData['type'] =1;
                 $this->echo("添加日期：" .$value['date']);
