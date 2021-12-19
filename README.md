@@ -15,6 +15,12 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 [查看更新说明](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md)
 
+#### 节假日
+
+> 包含法定节假日和周末等所有假日 
+
+登录账号后，浏览器直接访问：http://[你的ip(域名)+端口]/holiday/y_2022
+
 #### 软件导图（PHP版本）
 ![思维导图](https://images.gitee.com/uploads/images/2021/1027/194002_7fb7fdbf_1717198.png "2021-10-27 (2).png")
 
