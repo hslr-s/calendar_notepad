@@ -148,4 +148,40 @@ class Objectapi extends Tkcommon
         }
         
     }
+
+
+
+    // 创建一个事件主题
+    public function createSubject() {
+        $title = input('post.title/s');
+        $obj_id = input('get.obj_id/d');
+
+
+        $insertData['title'] = $title;
+        if (strlen($title) > 30) {
+            return $this->apiReturnError(0, "长度不能大于10个汉字");
+        }
+        $insertData['obj_id'] = $obj_id;
+        $insertData['create_time'] = date("Y-m-d H:i:s");
+        $res = Db::name('obj_subject')->where('title', $title)->find();
+        if ($res) {
+            return $this->apiReturnError(0, "已包含重复的事件主题");
+        }
+        Db::name('obj_subject')->insert($insertData);
+        return $this->apiReturnSuccess(null);
+    }
+
+    // 删除一个事件主题
+    public function deleteSubjectById() {
+        $id = input('post.id/d');
+        Db::name('obj_subject')->where('id', $id)->delete();
+        return $this->apiReturnSuccess(null);
+    }
+
+    // 根据项目id查询事件主题列表
+    public function getSubjectListByObjId() {
+        $obj_id = input('get.obj_id/d');
+        $list=Db::name('obj_subject')->where('obj_id', $obj_id)->order('id desc')->select();
+        return $this->apiReturnList($list);
+    }
 }

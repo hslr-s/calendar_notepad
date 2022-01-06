@@ -313,4 +313,13 @@ CREATE TABLE `calendar_user`  (
 -- ----------------------------
 INSERT INTO `calendar_user` VALUES (1, '小猎人', 'test123', 'e10adc3949ba59abbe56e057f20f883e', '', 1, 1, '2021-11-19 22:05:15');
 
+DROP TABLE IF EXISTS `calendar_obj_subject`;
+CREATE TABLE `calendar_obj_subject` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(20) DEFAULT NULL COMMENT '标题',
+  `obj_id` int(11) DEFAULT NULL COMMENT '项目id',
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED;
+
 SET FOREIGN_KEY_CHECKS = 1;

@@ -54,6 +54,29 @@ layui.define(['jquery', 'layer'], function (exports) {
         app.base.ajaxPost(domain + "delete?obj_id=" + objId, postData, callback, errCallback)
     }
 
+    // 创建项目事件主题
+    o.createSubject = function (objId, title, callback, errCallback) {
+        var postData = {}
+        postData['title'] = title;
+        app.base.ajaxPost(domain + "createSubject?obj_id=" + objId, postData, callback, errCallback)
+    }
+
+    // 获取项目事件主题
+    o.getSubjectList = function (objId, callback, errCallback) {
+        app.ajaxGet(domain + "getSubjectListByObjId?obj_id=" + objId, function(res){
+            if (callback) {
+                callback(res.data)
+            }
+        })
+        
+    }
+
+    // 删除项目事件主题
+    o.deleteSubjectById = function (objId,id, callback, errCallback) {
+        var postData = {}
+        postData['id'] = id;
+        app.base.ajaxPost(domain + "deleteSubjectById?obj_id=" + objId, postData, callback, errCallback)
+    }
 
 
 

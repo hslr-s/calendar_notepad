@@ -1,0 +1,85 @@
+
+
+<style>
+
+</style>
+
+<script type="text/html" id="tpl-object-event-subject">
+    <div style="padding: 20px;">
+        <button class="layui-btn layui-btn-xs" id="object_event_subject_add_btn">添加</button>
+        <table class="layui-hide" id="object_event_subject_table" lay-filter="object_event_subject_table"></table>
+    </div>
+    
+</script>
+
+<script type="text/html" id="object_event_subject_table_bar">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript">
+    app.base.loadApi("apiObject")
+    app.defTpl('object_event_subject', function (tplArg) {
+        layui.use(['layer', 'jquery',"table","apiObject"], function () {
+            var $ = layui.jquery,table=layui.table, apiObject=layui.apiObject
+                , layer = layui.layer;
+            
+
+            // app.runTpl("object_event_subject", { objId: 1 })
+            app.base.layer({
+                title: "事件主题管理",
+                area: [400, 500],
+                type:1,
+                content: $('#tpl-object-event-subject').html(),
+                success:function(){
+                    table.render({
+                        elem: '#object_event_subject_table'
+                        , url: '/objectapi/getSubjectListByObjId?obj_id=' + tplArg.objId
+                        , cols: [[
+                            { field: 'title', title: '标题' }
+                            , { fixed: 'right', title: '操作',width:80, toolbar: '#object_event_subject_table_bar'}
+                        ]]
+                        , skin:"nob"
+                        // , size:"sm"
+                    });
+
+                    // 添加按钮
+                    $("#object_event_subject_add_btn").click(function(){
+                        layer.prompt({ title: '请输入事件主题的标题' },function (value, promptIndex, elem) {
+                            apiObject.createSubject(tplArg.objId, value,function(){
+                                layer.close(promptIndex);
+                                table.reload("object_event_subject_table")
+                            },function(msg){
+                                layer.msg(msg)
+                            })
+                            // layer.close(index);
+                        });
+                    })
+
+                    table.on('tool(object_event_subject_table)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                        var data = obj.data; //获得当前行数据
+                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                        var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+                        if (layEvent === 'del') { //删除
+                            layer.confirm('确定要删除吗（不会删除之前的事件）',  {
+                                btn: ['确定', '取消'] //按钮
+                            },function (index) {
+                                apiObject.deleteSubjectById(0,data.id,function(data){
+                                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                    layer.close(index);
+                                })
+                            });
+
+                        } 
+
+                    });
+                }
+            })
+
+
+           
+        })
+
+    })
+    
+</script>

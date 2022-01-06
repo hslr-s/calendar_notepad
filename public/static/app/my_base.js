@@ -81,9 +81,6 @@ layui.define(['jquery','layer','laytpl',"app"],function(exports){
         $('#page-content style').append(btnStyleStr);
     }
 
-    function layerButton(title,className){
-        return '<button type="button" class="layui-btn ' + className+'">' + title +'</button>';
-    }
 
     function layerButtonStyleGetContent(layerskin,btnIndex,type){
         if (layerButtonStyle[type]){

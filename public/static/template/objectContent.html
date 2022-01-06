@@ -104,6 +104,9 @@
             font-size: 18px !important;
             font-family: layui-icon !important;
         }
+        .object-event-subject-setting{
+            cursor: pointer;
+        }
     </style>
     <!-- <div class="layui-hide"> -->
         <!-- <style id="objectContent-style">
@@ -159,14 +162,17 @@
                 <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
                     <!-- <input type="text" name="title" lay-verify="title" id='text_input' autocomplete="off" placeholder="请输入标题" class="layui-input"> -->
-                    <textarea name="desc" name="title" lay-verify="title" class="layui-textarea"  placeholder="请输入标题内容(不超过255字)" id="text_input"></textarea>
+                    <textarea name="title" lay-verify="title" class="layui-textarea"  placeholder="请输入标题内容(不超过255字)" id="text_input"></textarea>
                 </div> 
+            </div>
+            <div class="object-event-subject" style="margin-bottom:20px;">
+                事件主题：<i class="layui-icon-set-fill layui-icon object-event-subject-setting" title="管理事件主题"></i>
             </div>
             
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">内容</label>
                 <div class="layui-input-block">
-                    <textarea name="desc" placeholder="可选(不超过1500字)" class="layui-textarea" id="content"></textarea>
+                    <textarea placeholder="可选(不超过1500字)" class="layui-textarea" id="content"></textarea>
                 </div>
             </div>
 
@@ -742,7 +748,7 @@
                     title: layeropentitle,
                     content: $('#form_input').html(),
                     buttons: layerButtons,
-                    success: function () {
+                    success: function (e,editLayerIndex) {
                         // 如果只读模式需要删除不需要的元素
                         if (config.c_onlyRead==1) {
                             $('#class_select').parents('.layui-form-item').remove();
@@ -778,7 +784,24 @@
                                 form.render()
                         })
 
-
+                        // 渲染事件主题
+                        apiObject.getSubjectList(objId,function(data){
+                            
+                            $(".object-event-subject-setting").click(function(){
+                                layer.close(editLayerIndex)
+                                app.runTpl("object_event_subject", { objId: objId })
+                            })
+                            for (let i = 0; i < data.length; i++) {
+                                const element = data[i];
+                                $(".object-event-subject").append('<button class="layui-btn layui-btn-xs layui-btn-normal"  style="margin-bottom:5px;">#'+ element.title+'#</button>')
+                            }
+                            // 监听事件主题按钮被点击
+                            $(".object-event-subject button").click(function () {
+                                $("#text_input").val($(this).html() + " "+ $("#text_input").val())
+                                $("#text_input").focus()
+                            })
+                        })
+                        
 
 
                         colorpicker.render({
@@ -824,6 +847,8 @@
                     }
                 })
             }
+
+            
 
             // 显示模块 1.密码 2.内容 3.错误
             function showModle(code,arg1,arg2){
