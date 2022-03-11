@@ -126,7 +126,8 @@ class Objectapi extends Tkcommon
         $info = libProject::getInfo($obj_id);
         if($info){
             $mail=new Email();
-            $status=$mail->sendTplMail('95302870@qq.com','日历记事本 - 项目密码找回','您的项目['. $info['name'].']访问密码是：'. $info['pwd'].'。');
+            $username=Db::name('user')->where('id',$this->userId)->value('username');
+            $status=$mail->sendTplMail($username,'日历记事本 - 项目密码找回','您的项目['. $info['name'].']访问密码是：'. $info['pwd'].'。');
             if($status){
                 $this->apiReturnSuccess([]);
             }else{
