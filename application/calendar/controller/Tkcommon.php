@@ -19,8 +19,8 @@ class Tkcommon extends Common{
         // 缓存中没有loginKey，则读取数据库，并保存
         if(!$loginKey){
             $res=Db::name('user')->where('id',$uid)->find();
-            $loginKey=$res['loginkey'];
-            if($loginKey!=''){
+            if(isset($res['loginkey'])){
+                $loginKey = $res['loginkey'];
                 \think\facade\Cache::tag('Calendar_login')->set('Calendar_login_loginkey_'.$uid,$loginKey);
             }
             

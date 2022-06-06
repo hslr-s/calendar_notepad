@@ -11,7 +11,7 @@
 #### 软件架构
 ThinkPHP5.1 + 前端Layui + Fullcalendar
 
-#### 更新说明
+#### 更新说明（老用户必看）
 
 [查看更新说明](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md)
 
@@ -29,8 +29,11 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 #### 页面展示
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1115/193737_7653a572_1717198.jpeg "网页捕获_15-11-2021_193627_calendar.cn.jpeg")
+
+![报表](readme_src/tubiao.png "报表")
+
 ![内容页面](https://images.gitee.com/uploads/images/2021/1020/214019_89683b7c_1717198.png "2021-10-20.png")
-![列表页面](https://images.gitee.com/uploads/images/2021/1020/214029_9436ddcb_1717198.png "2021-10-20 (1).png")
+
 
 #### 开发计划
 [点击查看开发计划和进度](https://thoughts.teambition.com/share/617215d0f53beb0041053ef5#title=日历记事本（网页）)

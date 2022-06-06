@@ -51,7 +51,7 @@ class UserLib  {
         } else {
             // 添加
 
-            if ($findRes['id']) {
+            if (isset($findRes['id'])) {
                 $returnData['err'] = '用户已存在，请更换账号后重试';
                 return $returnData;
             }

@@ -326,10 +326,14 @@
 
             // 添加一条数据
             function addDataHtml(object_id, title, note) {
+                var checked_html="";
+                if(app.parseUrl().params['obj_id']== object_id){
+                    checked_html="content-item-title-select";
+                }
                 var html = `
                 <div class="content-item" data-object_id=${object_id}>
                     <a>
-                        <div class="content-item-title">
+                        <div class="content-item-title ${checked_html}">
                             ${title}
                         </div>
                         <div class="content-item-note">

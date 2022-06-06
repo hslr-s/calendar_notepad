@@ -145,7 +145,7 @@
     </div>
 
     <script type="text/html" id="admin_index_user_edit">
-        <div class="layui-form-item" style="margin-top: 20px;">
+        <div class="layui-form-item" style="padding: 20px;">
             
             <form class="layui-form" lay-filter="AdminIndexUserEdit">
 
@@ -165,7 +165,10 @@
                         <input type="text" name="password" required lay-verify="required" placeholder="修改时留空不修改"
                             autocomplete="off" class="layui-input">
                     </div>
-                    <div class="layui-form-mid layui-word-aux">6-18位</div>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux">6-18位</div>
+                    </div>
+                    
                 </div>
         
                 <div class="layui-form-item">
@@ -303,6 +306,7 @@
                     }}
                 , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
             ]]
+            ,height: layui.$(document).height()-150
             // , page: true
         });
 

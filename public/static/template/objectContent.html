@@ -248,13 +248,22 @@
             // ====================
             // 组件自定义按钮
             // ====================
-            var leftButtonsText = "setting,search";
+            var leftButtonsText = "setting,chart,search";
             var customButtons = {
                 setting: {
-                    hint: "管理平台",
+                    hint: "项目设置",
                     icon: ' custom-button layui-icon-app',
                     click: function () {
                         app.runTpl('setting/objectSetting', {
+                            objId: objId
+                        })
+                    }
+                },
+                chart: {
+                    hint: "图表",
+                    icon: ' custom-button  layui-icon layui-icon-chart-screen',
+                    click: function () {
+                        app.runTpl('objectChart', {
                             objId: objId
                         })
                     }

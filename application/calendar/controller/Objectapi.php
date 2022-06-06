@@ -35,6 +35,9 @@ class Objectapi extends Tkcommon
         $config['project_name']=$info['name'];
         $config['project_note']=$info['note'];
         $config['project_password'] = $info['pwd'];
+        $config['project_create_time'] = $info['create_time'];
+        $config['project_first_event_time'] = Db::name('note_list')->limit(1)->order('start_time ASC')->value('start_time');
+
         return json(['code' => 1, 'data' => $config]);
     }
 

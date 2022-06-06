@@ -91,7 +91,7 @@
     <h2  class="title">日历记事本 - 登录</h2>
 
     <form class="layui-form layui-form-pane" action="" method="POST">
-
+        
         <div class="layui-form-item">
             <input type="text" name="username" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
         </div>
@@ -110,14 +110,18 @@
         </div> -->
 
     
-        
+        <div style="float: right;margin-bottom:10px"><input type="checkbox" title="记住密码" lay-filter="remember_password" lay-skin="primary"></div>
         
         <div class="layui-form-item" align="center">
             <a class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" id='btn_login'>登录</a>
         </div>
-        <a class="register-username layui-hide" >注册账号</a>
-        <a class="enian-float-right" >忘记密码?</a>
         
+        <div>
+            <a class="register-username layui-hide">注册账号</a>
+            <a class="enian-float-right">忘记密码?</a>
+        </div>
+        
+       
     </form>
 </div>
 
@@ -135,7 +139,8 @@
                 type:'login'
                 ,code:false
             };
-
+        var remember_password=false
+        form.render()
         // 获取基础信息
         layui.apiLogin.getOpenInfo(function(d){
             if(d.open_register=='1'){
@@ -144,6 +149,18 @@
         })
 
         app.base.setTitle('日历记事本 - 登录');
+        var remember_login_info = layui.data('remember_login_info');
+        if(remember_login_info.username){
+            $('input[name="username"]').val(remember_login_info.username)
+            $('input[lay-filter="remember_password"]').attr("checked",true)
+            remember_password=true
+            form.render()
+        }
+
+        if (remember_login_info.password) {
+            $('input[name="password"]').val(remember_login_info.password)
+        }
+        
         
         // 跳转注册页
         $('.register-username').click(function(){
@@ -155,12 +172,26 @@
             app.go(app.base.route.forgetPassword);
         })
 
-        
-
-       
+        form.on('checkbox(remember_password)', function (data) {
+            remember_password= data.elem.checked
+        }); 
 
         $('#btn_login').click(function(){
-            layui.apiLogin.check($('input[name="username"]').val(), $('input[name="password"]').val(),function(){
+            var username= $('input[name="username"]').val()
+            var password = $('input[name="password"]').val()
+            if (remember_password) {
+                layui.data('remember_login_info', {
+                    key: 'username'
+                    , value: username
+                });
+                layui.data('remember_login_info', {
+                    key: 'password'
+                    , value: password
+                });
+            }else{
+                layui.data('remember_login_info', null);
+            }
+            layui.apiLogin.check(username, password,function(){
                 layer.closeAll();
                 layer.msg('登录成功');
                 window.clearInterval(timeOut);//关闭定时
@@ -184,6 +215,5 @@
                 async:true
             });
         }
-        // layer.msg('hello');
     });
 </script>

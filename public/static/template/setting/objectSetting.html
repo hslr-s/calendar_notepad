@@ -7,6 +7,11 @@
   form {
     margin: 20px;
   }
+
+  .not-update-input{
+    cursor:not-allowed;
+    border: none;
+  }
 </style>
 
 <script type="text/html" id="tpl-objectSetting">
@@ -33,6 +38,18 @@
           <div class="layui-input-inline">
             <input type="text" name="project_password" required lay-verify="required" placeholder="无密码" autocomplete="off"
               class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">项目创建时间</label>
+          <div class="layui-input-inline">
+            <input type="text" name="project_create_time" class="not-update-input layui-input" title="此项不可修改" readonly autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">首个事件时间</label>
+          <div class="layui-input-inline">
+            <input type="text" name="project_first_event_time" class="not-update-input layui-input" title="此项不可修改，首个事件的开始时间" readonly autocomplete="off">
           </div>
         </div>
       </div>
