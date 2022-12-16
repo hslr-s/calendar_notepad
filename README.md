@@ -15,11 +15,22 @@ ThinkPHP5.1 + 前端Layui + Fullcalendar
 
 [查看更新说明](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md)
 
-#### 节假日
+#### 中国法定节假日
 
-> 包含法定节假日和周末等所有假日 
+> 包含法定节假日和周末等所有假日，是由[提莫的神秘小站-免费节假日 API](http://timor.tech/api/holiday)提供。
 
-登录账号后，浏览器直接访问：http://[你的ip(域名)+端口]/holiday/y_2022
+**浏览器登录账号后**，直接访问：http://[你的ip(域名)+端口]/holiday/export/y/[年份]
+
+示例：
+http://127.0.0.1:8080/holiday/export/y/2023
+
+本法定节假日已经包含周末。
+
+##### 实现方式（更新不及时可自行操作）
+将`http://timor.tech/api/holiday/year/2023?type=Y&week=Y`内容导出为json文件，命名为`2023.json`存放入`/holiday-json`目录下，最后按上面流程操作即可（其中年份按自己需求更改）。
+
+
+
 
 #### 软件导图（PHP版本）
 ![思维导图](https://images.gitee.com/uploads/images/2021/1027/194002_7fb7fdbf_1717198.png "2021-10-27 (2).png")
