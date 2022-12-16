@@ -70,7 +70,6 @@ http://127.0.0.1:8080/holiday/export/y/2023
 - 修改的js文件：`public/static/app/my_base.js`
 
 
-1. 你可以根据*主题目录*中的`default_demo.css`demo样式文件衍生出属于你的个性主题文件，并存放在目录中。
-2. 打开*my_base.js*修改init方法中的主题配置改为你的主题文件名称即可。
-
+1. 你可以根据`*主题目录*`中的`default_demo.css`demo样式文件衍生出属于你的个性主题，并文件存放在主题目录中。
+2. 打开`*my_base.js*`修改init方法中的主题配置改为你的主题文件名称即可。（改完请清除一下浏览器缓存）
 ![](readme_src/theme_update.png)
