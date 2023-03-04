@@ -31,7 +31,7 @@
                     <li class="layui-this">邮箱设置</li>
                     <li>其他设置</li>
                     <li>用户管理</li>
-                    <li>升级锂日历</li>
+                    <li>迁移至锂日历<span class="layui-badge">new</span></li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
@@ -136,17 +136,19 @@
                           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                         </script>
                     </div>
-                    <div class="layui-tab-item">
+                    <div class="layui-tab-item" id="new_li_calendar" style="height: calc(100% - 55px);overflow: auto;">
                         <form class="layui-form" action="" lay-filter="li_calendar">
                             <blockquote class="layui-elem-quote">
-                                本项目纯纯公益开发，如果您觉得项目对您有帮助或者作者不容易。你可以选择对作者进行<a href="#" style="color: red;">打赏</a>来支持作者。让作者更有动力和资金继续开源,在此感谢！
+                                本项目已经被全新的 <a title="点击查看锂日历(Li-calendar)" target="_blank" style="color: green;" href="https://gitee.com/li-calendar-notepad/li-calendar-gin">锂日历(Li-calendar)</a> 替代，新版本全新UI，轻便易部署。本版本停止新功能开发。
+                                本项目纯纯公益开发，如果您觉得项目对您有帮助或者作者不容易。你可以选择对作者进行<a href="https://blog.enianteam.com/u/sun/content/11#%E6%89%93%E8%B5%8F" target="_blank"  style="color: red;">打赏</a>来支持作者。让作者更有动力和资金继续开源,在此感谢！
                             </blockquote>
                             <blockquote class="layui-elem-quote">
                                 迁移前请阅读：
-                                <div>1. 配置好锂日历的数据库信息后，运行一次锂日历，然后退出程序再进行迁移</div>
-                                <div>2. 仅支持迁移至Mysql数据库</div>
-                                <div>3. 迁移会清除锂日历原本的数据，请保证无重要数据或提前备份</div>
-                                <div>4. 部分不重要数据由于新版改动过大不支持迁移</div>
+                                <div>1. 本迁移程序不会删除当前应用版本的数据库，但是避免发生意外导致数据丢失，迁移前请一定要备份一份现在库的数据</div>
+                                <div>2. 配置好锂日历的数据库信息后，运行一次锂日历，然后退出程序再进行迁移</div>
+                                <div>3. 仅支持迁移至Mysql数据库</div>
+                                <div>4. 迁移会清除 锂日历 原本的数据，请保证无重要数据或提前备份</div>
+                                <div>5. 部分不重要数据由于新版改动过大不支持迁移</div>
                             </blockquote>
 
                             <blockquote class="layui-elem-quote">下方表单信息请填写 <锂日历> Mysql数据库信息</blockquote>
@@ -195,7 +197,7 @@
 
                             <div class="layui-form-item" >
                                 <p>请决定要转移的数据：</p>
-                                <div style="height: 80px;">
+                                <div style="height: 40px;">
                                     <input type="checkbox" name="part[main_data]" title="主要数据(用户,项目,项目事件)" checked lay-skin="primary">
                                     <input type="checkbox" name="part[event_subject]" title="事件主题" lay-skin="primary">
                                     <input type="checkbox" name="part[event_style]" title="事件风格数据" lay-skin="primary">
