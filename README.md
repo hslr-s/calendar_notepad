@@ -1,10 +1,10 @@
-# 日历记事本V1 (网页日历记事本)
+# 日历记事本（PHP+Layui）
 
 **[演示站点](http://rilidemo.enianteam.com/)(自行注册即可) | [更新说明日志](https://gitee.com/hslr/calendar_notepad/blob/master/update_log.md) | Q群:685960647(请备注gitee)**
 
-## 💥v2版本已在路上
+## 💥 迁移至锂日历（开启新版）
 
-全新版本正在开发中，请看开发计划：[日历记事本v2（Gin+vue3）开发计划](http://blog.enianteam.com/u/sun/content/184)。新版本开发完成后仍会开源，不过目前在开发中还未成型。新版本发布之后v1版本可使用迁移工具无缝将原有数据迁移到v2版本中，所以您现在可以继续使用v1版本。
+全新版本[Li Calendar - 锂日历记事本](https://gitee.com/li-calendar-notepad/li-calendar-gin)已经可以使用了。新版本框架Go+Gin+vue3+ElementUI-Plus。当前版本将不再开发新功能。本版本老用户可以通过`登录管理员账号`->`管理平台`->`迁移至锂日历`进行迁移至新版本。新用户请直接使用新版本。
 
 
 ## 🎉 介绍
